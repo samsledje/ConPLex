@@ -1115,7 +1115,7 @@ files = [
 [package.dependencies]
 Click = ">=8.0.2"
 dparse = ">=0.6.2"
-packaging = ">=21.0,<22.0"
+packaging = ">=21.0"
 requests = "*"
 "ruamel.yaml" = ">=0.17.21"
 setuptools = ">=19.3"
@@ -1401,4 +1401,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "7d72f7790d04fb9934e1395fdbf47de1d1be1d5a6c1eaaece56027955010bde6"
+content-hash = "33d9dd869d1c93c280e96d9e200f9928b3839baa0136cdf392247836117166ba"
