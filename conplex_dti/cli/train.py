@@ -6,7 +6,7 @@ import os
 from argparse import ArgumentParser
 from pathlib import Path
 from time import time
-
+import wandb
 import numpy as np
 import pandas as pd
 import torch
@@ -17,7 +17,7 @@ from torch.autograd import Variable
 from torch.utils import data
 from tqdm.auto import tqdm
 
-import wandb
+
 
 from ..dataset import (
     DTIDataModule,
