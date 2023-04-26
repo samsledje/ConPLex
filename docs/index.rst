@@ -15,12 +15,11 @@ We develop a deep learning model, ConPLex, successfully leveraging the advances 
 protein-anchored contrastive co-embedding ("Con") to outperform state-of-the-art approaches. ConPLex achieves high accuracy, broad adaptivity to unseen data, 
 and specificity against decoy compounds. It makes predictions of binding based on the distance between learned representations, enabling predictions at the scale 
 of massive compound libraries and the human proteome. Experimental testing of 19 kinase-drug interaction predictions validated 12 interactions, including four 
-with sub-nanomolar affinity, plus a novel strongly-binding EPHB1 inhibitor (K_D = 1.3nM). Furthermore, ConPLex embeddings are interpretable, which enables 
+with sub-nanomolar affinity, plus a novel strongly-binding EPHB1 inhibitor ($K_D = 1.3nM$). Furthermore, ConPLex embeddings are interpretable, which enables 
 us to visualize the drug-target embedding space and use embeddings to characterize the function of human cell-surface proteins. We anticipate ConPLex will 
 facilitate novel drug discovery by making highly sensitive in-silico drug screening feasible at genome scale.
 
-If you use ConPLex, please cite "Contrastive learning in protein language space predicts interactions between drugs and protein targets" by
- `Rohit Singh*`_, `Sam Sledzieski*`_, , `Lenore Cowen`_, and `Bonnie Berger`_.
+If you use ConPLex, please cite "Contrastive learning in protein language space predicts interactions between drugs and protein targets" by `Rohit Singh*`_, `Sam Sledzieski*`_, `Lenore Cowen`_, and `Bonnie Berger`_.
 
 .. _ConPLex Home Page: http://conplex.csail.mit.edu
 .. _ConPLex GitHub Page: https://github.com/samsledje/ConPLex.git
@@ -32,9 +31,11 @@ If you use ConPLex, please cite "Contrastive learning in protein language space 
 Table of Contents
 =================
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: Contents:
 
+   installation
+   configuring
    api/index
 
 
