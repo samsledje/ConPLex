@@ -1,6 +1,9 @@
 name: build
 
-on: [push, pull_request]
+on: push
+  branches:
+    - main
+on: pull_request
   branches:
     - main
 
