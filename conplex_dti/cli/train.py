@@ -1,108 +1,184 @@
+import typing as T
+
 import copy
-from time import time
+import json
 import os
+from argparse import ArgumentParser
+from pathlib import Path
+from time import time
+
 import numpy as np
 import pandas as pd
 import torch
-import json
+import torchmetrics
+from omegaconf import OmegaConf
 from torch import nn
 from torch.autograd import Variable
 from torch.utils import data
 from tqdm.auto import tqdm
-import typing as T
-import torchmetrics
-
-from argparse import ArgumentParser
 
 import wandb
-from omegaconf import OmegaConf
-from pathlib import Path
 
-from ..model import architectures as model_types
-from ..model.margin import MarginScheduledLossFunction
 from ..dataset import (
-    get_task_dir,
     DTIDataModule,
-    TDCDataModule,
     DUDEDataModule,
     EnzPredDataModule,
-)
-from ..utils import (
-    set_random_seed,
-    config_logger,
-    get_logger,
+    TDCDataModule,
+    get_task_dir,
 )
 from ..featurizer import get_featurizer
+from ..model import architectures as model_types
+from ..model.margin import MarginScheduledLossFunction
+from ..utils import config_logger, get_logger, set_random_seed
 
 logg = get_logger()
 
+
 def add_args(parser: ArgumentParser):
+    parser.add_argument("--run-id", required=True, help="Experiment ID", dest="run_id")
     parser.add_argument(
-        "--run-id", required=True, help="Experiment ID", dest="run_id"
-    )
-    parser.add_argument(
-        "--config", required=True, help="YAML config file", default="configs/default_config.yaml"
+        "--config",
+        required=True,
+        help="YAML config file",
+        default="configs/default_config.yaml",
     )
 
-    # parser.add_argument(
-    #     "--wandb-proj",
-    #     help="Weights and Biases Project",
-    #     dest="wandb_proj",
-    # )
-    # parser.add_argument(
-    #     "--task",
-    #     choices=[
-    #         "biosnap",
-    #         "bindingdb",
-    #         "davis",
-    #         "biosnap_prot",
-    #         "biosnap_mol",
-    #         "dti_dg",
-    #     ],
-    #     type=str,
-    #     help="Task name. Could be biosnap, bindingdb, davis, biosnap_prot, biosnap_mol.",
-    # )
+    # Logging and Paths
+    log_group = parser.add_argument_group("Logging and Paths")
 
-    # parser.add_argument(
-    #     "--drug-featurizer", help="Drug featurizer", dest="drug_featurizer"
-    # )
-    # parser.add_argument(
-    #     "--target-featurizer", help="Target featurizer", dest="target_featurizer"
-    # )
-    # parser.add_argument(
-    #     "--distance-metric",
-    #     help="Distance in embedding space to supervise with",
-    #     dest="distance_metric",
-    # )
-    # parser.add_argument("--epochs", type=int, help="number of total epochs to run")
-    # parser.add_argument("-b", "--batch-size", type=int, help="batch size")
-    # parser.add_argument(
-    #     "--lr",
-    #     "--learning-rate",
-    #     type=float,
-    #     help="initial learning rate",
-    #     dest="lr",
-    # )
-    # parser.add_argument(
-    #     "--clr", type=float, help="initial learning rate", dest="clr"
-    # )
-    # parser.add_argument(
-    #     "--r", "--replicate", type=int, help="Replicate", dest="replicate"
-    # )
-    # parser.add_argument(
-    #     "--d", "--device", type=int, help="CUDA device", dest="device"
-    # )
-    # parser.add_argument(
-    #     "--verbosity", type=int, help="Level at which to log", dest="verbosity"
-    # )
-    # parser.add_argument(
-    #     "--checkpoint", default=None, help="Model weights to start from"
-    # )
+    log_group.add_argument(
+        "--wandb-proj",
+        help="Weights and Biases Project",
+        dest="wandb_proj",
+    )
+    log_group.add_argument(
+        "--wandb_save",
+        help="Log to Weights and Biases",
+        type="str",
+        dest="wandb_save",
+        action="store_true",
+    )
+    log_group.add_argument(
+        "--log-file",
+        help="Log file",
+        type="str",
+        dest="log_file",
+    )
+    log_group.add_argument(
+        "--model-save-dir",
+        help="Model save directory",
+        type="str",
+        dest="model_save_dir",
+    )
+    log_group.add_argument(
+        "--data-cache-dir",
+        help="Data cache directory",
+        type="str",
+        dest="data_cache_dir",
+    )
+
+    # Miscellaneous
+    misc_group = parser.add_argument_group("Miscellaneous")
+    misc_group.add_argument(
+        "--r", "--replicate", type=int, help="Replicate", dest="replicate"
+    )
+    misc_group.add_argument(
+        "--d", "--device", type=int, help="CUDA device", dest="device"
+    )
+    misc_group.add_argument(
+        "--verbosity", type=int, help="Level at which to log", dest="verbosity"
+    )
+    misc_group.add_argument(
+        "--checkpoint", default=None, help="Model weights to start from"
+    )
+
+    # Task and Dataset
+    task_group = parser.add_argument_group("Task and Dataset")
+
+    task_group.add_argument(
+        "--task",
+        choices=[
+            "biosnap",
+            "bindingdb",
+            "davis",
+            "biosnap_prot",
+            "biosnap_mol",
+            "dti_dg",
+        ],
+        type=str,
+        help="Task name. Could be biosnap, bindingdb, davis, biosnap_prot, biosnap_mol.",
+    )
+    task_group.add_argument(
+        "--contrastive-split",
+        type=str,
+        help="Contrastive split",
+        dest="contrastive_split",
+        choices=["within", "between"],
+    )
+
+    # Model and Featurizers
+    model_group = parser.add_argument_group("Model and Featurizers")
+
+    model_group.add_argument(
+        "--drug-featurizer", help="Drug featurizer", dest="drug_featurizer"
+    )
+    model_group.add_argument(
+        "--target-featurizer", help="Target featurizer", dest="target_featurizer"
+    )
+    model_group.add_argument(
+        "--model-architecture", help="Model architecture", dest="model_architecture"
+    )
+    model_group.add_argument(
+        "--latent-dimension", help="Latent dimension", dest="latent_dimension"
+    )
+    model_group.add_argument(
+        "latent-distance", help="Latent distance", dest="latent_distance"
+    )
+    # Training
+    train_group = parser.add_argument_group("Training")
+
+    train_group.add_argument("--epochs", type=int, help="number of total epochs to run")
+    train_group.add_argument("-b", "--batch-size", type=int, help="batch size")
+    train_group.add_argument(
+        "--cb", "--contrastive-batch-size", type=int, help="contrastive batch size"
+    )
+    train_group.add_argument("--shuffle", type=bool, help="shuffle data")
+    train_group.add_argument("--num-workers", type=int, help="number of workers")
+    train_group.add_argument("--every-n-val", type=int, help="validate every n epochs")
+
+    train_group.add_argument(
+        "--lr",
+        "--learning-rate",
+        type=float,
+        help="initial learning rate",
+        dest="lr",
+    )
+    train_group.add_argument(
+        "--lr-t0", type=int, help="number of epochs to reset learning rate"
+    )
+    train_group.add_argument(
+        "--contrastive", type=bool, help="run contrastive training"
+    )
+    train_group.add_argument(
+        "--clr", type=float, help="initial learning rate", dest="clr"
+    )
+    train_group.add_argument(
+        "--clr-t0", type=int, help="number of epochs to reset learning rate"
+    )
+    train_group.add_argument(
+        "--margin-fn", type=str, help="margin function", dest="margin_fn"
+    )
+    train_group.add_argument(
+        "--margin-max", type=float, help="margin max", dest="margin_max"
+    )
+    train_group.add_argument(
+        "--margin-t0", type=int, help="number of epochs to reset margin"
+    )
+
     return parser
 
 
 def test(model, data_generator, metrics, device=None, classify=True):
-
     if device is None:
         device = torch.device("cpu")
 
@@ -110,7 +186,7 @@ def test(model, data_generator, metrics, device=None, classify=True):
 
     for k, met_class in metrics.items():
         if classify:
-            met_instance = met_class(task = "binary")
+            met_instance = met_class(task="binary")
         else:
             met_instance = met_class()
         met_instance.to(device)
@@ -120,7 +196,6 @@ def test(model, data_generator, metrics, device=None, classify=True):
     model.eval()
 
     for _, batch in tqdm(enumerate(data_generator), total=len(data_generator)):
-
         pred, label = step(model, batch, device)
         if classify:
             label = label.int()
@@ -131,7 +206,7 @@ def test(model, data_generator, metrics, device=None, classify=True):
             met_instance(pred, label)
 
     results = {}
-    for (k, met_instance) in metric_dict.items():
+    for k, met_instance in metric_dict.items():
         res = met_instance.compute()
         results[k] = res
 
@@ -142,7 +217,6 @@ def test(model, data_generator, metrics, device=None, classify=True):
 
 
 def step(model, batch, device=None):
-
     if device is None:
         device = torch.device("cpu")
 
@@ -153,7 +227,6 @@ def step(model, batch, device=None):
 
 
 def contrastive_step(model, batch, device=None):
-
     if device is None:
         device = torch.device("cpu")
 
@@ -204,12 +277,10 @@ def main(args):
 
     # Load DataModule
     logg.info("Preparing DataModule")
-    task_dir = get_task_dir(config.task, database_root = config.data_cache_dir)
+    task_dir = get_task_dir(config.task, database_root=config.data_cache_dir)
 
     drug_featurizer = get_featurizer(config.drug_featurizer, save_dir=task_dir)
-    target_featurizer = get_featurizer(
-        config.target_featurizer, save_dir=task_dir
-    )
+    target_featurizer = get_featurizer(config.target_featurizer, save_dir=task_dir)
 
     if config.task == "dti_dg":
         config.classify = False
@@ -320,10 +391,8 @@ def main(args):
             update_fn=config.margin_fn,
         )
         opt_contrastive = torch.optim.AdamW(model.parameters(), lr=config.clr)
-        lr_scheduler_contrastive = (
-            torch.optim.lr_scheduler.CosineAnnealingWarmRestarts(
-                opt_contrastive, T_0=config.clr_t0
-            )
+        lr_scheduler_contrastive = torch.optim.lr_scheduler.CosineAnnealingWarmRestarts(
+            opt_contrastive, T_0=config.clr_t0
         )
 
     # Metrics
@@ -381,17 +450,13 @@ def main(args):
         for i, batch in tqdm(
             enumerate(training_generator), total=len(training_generator)
         ):
-            pred, label = step(
-                model, batch, device
-            )  # batch is (2048, 1024, 1)
+            pred, label = step(model, batch, device)  # batch is (2048, 1024, 1)
 
             loss = loss_fct(pred, label)
 
             wandb_log(
                 {
-                    "train/step": (
-                        epo * len(training_generator) * config.batch_size
-                    )
+                    "train/step": (epo * len(training_generator) * config.batch_size)
                     + (i * config.batch_size),
                     "train/loss": loss,
                 },
@@ -423,14 +488,9 @@ def main(args):
                 enumerate(contrastive_generator),
                 total=len(contrastive_generator),
             ):
+                anchor, positive, negative = contrastive_step(model, batch, device)
 
-                anchor, positive, negative = contrastive_step(
-                    model, batch, device
-                )
-
-                contrastive_loss = contrastive_loss_fct(
-                    anchor, positive, negative
-                )
+                contrastive_loss = contrastive_loss_fct(anchor, positive, negative)
 
                 wandb_log(
                     {
@@ -467,16 +527,13 @@ def main(args):
             logg.info(
                 f"Updating contrastive learning rate to {lr_scheduler_contrastive.get_lr()[0]:8f}"
             )
-            logg.info(
-                f"Updating contrastive margin to {contrastive_loss_fct.margin}"
-            )
+            logg.info(f"Updating contrastive margin to {contrastive_loss_fct.margin}")
 
         epoch_time_end = time()
 
         # Validation
         if epo % config.every_n_val == 0:
             with torch.set_grad_enabled(False):
-
                 val_results = test(
                     model,
                     validation_generator,
@@ -508,9 +565,7 @@ def main(args):
                     logg.info(f"Saving checkpoint model to {model_save_path}")
 
                     if do_wandb:
-                        art = wandb.Artifact(
-                            f"dti-{config.run_id}", type="model"
-                        )
+                        art = wandb.Artifact(f"dti-{config.run_id}", type="model")
                         art.add_file(model_save_path, model_save_path.name)
                         wandb.log_artifact(art, aliases=["best"])
 
@@ -547,9 +602,7 @@ def main(args):
                 if not k.startswith("_"):
                     logg.info(f"{k}: {v}")
 
-            model_save_path = Path(
-                f"{save_dir}/{config.run_id}_best_model.pt"
-            )
+            model_save_path = Path(f"{save_dir}/{config.run_id}_best_model.pt")
             torch.save(
                 model_max.state_dict(),
                 model_save_path,
@@ -557,9 +610,7 @@ def main(args):
             logg.info(f"Saving final model to {model_save_path}")
 
             if do_wandb:
-                art = wandb.Artifact(
-                    f"dti-{config.run_id}", type="model"
-                )
+                art = wandb.Artifact(f"dti-{config.run_id}", type="model")
                 art.add_file(model_save_path, model_save_path.name)
                 wandb.log_artifact(art, aliases=["best"])
 
@@ -568,6 +619,6 @@ def main(args):
 
     return model_max
 
+
 if __name__ == "__main__":
     best_model = main()
-

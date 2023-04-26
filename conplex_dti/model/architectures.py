@@ -157,6 +157,7 @@ class SimpleCoembedding(nn.Module):
 
 SimpleCoembeddingNoSigmoid = SimpleCoembedding
 
+
 class SimpleCoembeddingSigmoid(nn.Module):
     def __init__(
         self,

@@ -2,11 +2,12 @@
 ConPLex: DTI Prediction
 """
 
-from conplex_dti import cli, version
 import argparse
 
-def main():
+from conplex_dti import cli, version
 
+
+def main():
     parser = argparse.ArgumentParser(description=__doc__)
 
     parser.add_argument(
