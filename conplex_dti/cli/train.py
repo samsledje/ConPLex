@@ -38,66 +38,66 @@ logg = get_logger()
 
 def add_args(parser: ArgumentParser):
     parser.add_argument(
-        "--run-id", required=True,help="Experiment ID", dest="run_id"
+        "--run-id", required=True, help="Experiment ID", dest="run_id"
     )
     parser.add_argument(
-        "--config", help="YAML config file", default="configs/default_config.yaml"
+        "--config", required=True, help="YAML config file", default="configs/default_config.yaml"
     )
 
-    parser.add_argument(
-        "--wandb-proj",
-        help="Weights and Biases Project",
-        dest="wandb_proj",
-    )
-    parser.add_argument(
-        "--task",
-        choices=[
-            "biosnap",
-            "bindingdb",
-            "davis",
-            "biosnap_prot",
-            "biosnap_mol",
-            "dti_dg",
-        ],
-        type=str,
-        help="Task name. Could be biosnap, bindingdb, davis, biosnap_prot, biosnap_mol.",
-    )
+    # parser.add_argument(
+    #     "--wandb-proj",
+    #     help="Weights and Biases Project",
+    #     dest="wandb_proj",
+    # )
+    # parser.add_argument(
+    #     "--task",
+    #     choices=[
+    #         "biosnap",
+    #         "bindingdb",
+    #         "davis",
+    #         "biosnap_prot",
+    #         "biosnap_mol",
+    #         "dti_dg",
+    #     ],
+    #     type=str,
+    #     help="Task name. Could be biosnap, bindingdb, davis, biosnap_prot, biosnap_mol.",
+    # )
 
-    parser.add_argument(
-        "--drug-featurizer", help="Drug featurizer", dest="drug_featurizer"
-    )
-    parser.add_argument(
-        "--target-featurizer", help="Target featurizer", dest="target_featurizer"
-    )
-    parser.add_argument(
-        "--distance-metric",
-        help="Distance in embedding space to supervise with",
-        dest="distance_metric",
-    )
-    parser.add_argument("--epochs", type=int, help="number of total epochs to run")
-    parser.add_argument("-b", "--batch-size", type=int, help="batch size")
-    parser.add_argument(
-        "--lr",
-        "--learning-rate",
-        type=float,
-        help="initial learning rate",
-        dest="lr",
-    )
-    parser.add_argument(
-        "--clr", type=float, help="initial learning rate", dest="clr"
-    )
-    parser.add_argument(
-        "--r", "--replicate", type=int, help="Replicate", dest="replicate"
-    )
-    parser.add_argument(
-        "--d", "--device", type=int, help="CUDA device", dest="device"
-    )
-    parser.add_argument(
-        "--verbosity", type=int, help="Level at which to log", dest="verbosity"
-    )
-    parser.add_argument(
-        "--checkpoint", default=None, help="Model weights to start from"
-    )
+    # parser.add_argument(
+    #     "--drug-featurizer", help="Drug featurizer", dest="drug_featurizer"
+    # )
+    # parser.add_argument(
+    #     "--target-featurizer", help="Target featurizer", dest="target_featurizer"
+    # )
+    # parser.add_argument(
+    #     "--distance-metric",
+    #     help="Distance in embedding space to supervise with",
+    #     dest="distance_metric",
+    # )
+    # parser.add_argument("--epochs", type=int, help="number of total epochs to run")
+    # parser.add_argument("-b", "--batch-size", type=int, help="batch size")
+    # parser.add_argument(
+    #     "--lr",
+    #     "--learning-rate",
+    #     type=float,
+    #     help="initial learning rate",
+    #     dest="lr",
+    # )
+    # parser.add_argument(
+    #     "--clr", type=float, help="initial learning rate", dest="clr"
+    # )
+    # parser.add_argument(
+    #     "--r", "--replicate", type=int, help="Replicate", dest="replicate"
+    # )
+    # parser.add_argument(
+    #     "--d", "--device", type=int, help="CUDA device", dest="device"
+    # )
+    # parser.add_argument(
+    #     "--verbosity", type=int, help="Level at which to log", dest="verbosity"
+    # )
+    # parser.add_argument(
+    #     "--checkpoint", default=None, help="Model weights to start from"
+    # )
     return parser
 
 
@@ -119,7 +119,7 @@ def test(model, data_generator, metrics, device=None, classify=True):
 
     model.eval()
 
-    for i, batch in tqdm(enumerate(data_generator), total=len(data_generator)):
+    for _, batch in tqdm(enumerate(data_generator), total=len(data_generator)):
 
         pred, label = step(model, batch, device)
         if classify:

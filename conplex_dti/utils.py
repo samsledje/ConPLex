@@ -2,28 +2,26 @@ import typing as T
 
 import logging as lg
 import multiprocessing as mp
-import os
 import sys
 from functools import partial
 from pathlib import Path
 
 import h5py
 import numpy as np
-import pandas as pd
 import torch
-import torch.nn as nn
 from omegaconf import OmegaConf
 from rdkit import Chem, DataStructs
 from rdkit.Chem import AllChem
-from torch.utils.data import DataLoader, Dataset
 from tqdm import tqdm
 
 logLevels = {0: lg.ERROR, 1: lg.WARNING, 2: lg.INFO, 3: lg.DEBUG}
 LOGGER_NAME = "DTI"
 
 
-def get_logger():
-    return lg.getLogger(LOGGER_NAME)
+def get_logger(logger_name: str = None) -> lg.Logger:
+    if logger_name is None:
+        logger_name = LOGGER_NAME
+    return lg.getLogger(logger_name)
 
 
 logg = get_logger()

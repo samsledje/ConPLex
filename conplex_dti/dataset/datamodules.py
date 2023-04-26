@@ -10,7 +10,6 @@ from pathlib import Path
 import pandas as pd
 import pytorch_lightning as pl
 import torch
-import torch.nn as nn
 from numpy.random import choice
 from sklearn.model_selection import KFold, train_test_split
 from tdc.benchmark_group import dti_dg_group

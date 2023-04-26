@@ -25,6 +25,7 @@ def main():
 
     modules = {
         "train": (cli.train, cli.train_parser),
+        "download": (cli.download, cli.download_parser),
         # "embed": embed,
         # "evaluate": evaluate,
         # "predict": predict,

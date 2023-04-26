@@ -11,9 +11,6 @@ import torch
 from ..utils import get_logger
 from .base import Featurizer
 
-# from dscript.language_model import lm_embed
-# from dscript.pretrained import get_pretrained
-
 logg = get_logger()
 
 MODEL_CACHE_DIR = Path(
@@ -30,6 +27,7 @@ os.makedirs(MODEL_CACHE_DIR, exist_ok=True)
 class BeplerBergerFeaturizer(Featurizer):
     def __init__(self, save_dir: Path = Path().absolute()):
         super().__init__("BeplerBerger", 6165, save_dir)
+        from dscript.language_model import lm_embed
 
         self._max_len = 800
         self._embed = lm_embed
