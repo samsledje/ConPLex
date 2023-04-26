@@ -1,0 +1,46 @@
+# Logging and Paths
+wandb_proj: NoSigmoidTest
+wandb_save: True
+log_file: ./logs/scratch_testing.log
+model_save_dir: ./best_models
+data_cache_dir: /data/cb/samsl/Adapting_PLM_DTI/dataset
+
+# Misc
+replicate: 0
+device: 0
+verbosity: 3
+
+# Task and Dataset
+task: davis
+contrastive_split: within
+
+# Model and Featurizers
+drug_featurizer: MorganFeaturizer
+target_featurizer: ProtBertFeaturizer
+model_architecture: SimpleCoembeddingNoSigmoid
+latent_dimension: 1024
+latent_distance: "Cosine"
+
+# Training
+epochs: 50
+
+## Batching
+batch_size: 32
+contrastive_batch_size: 256
+shuffle: True
+num_workers: 0
+every_n_val: 1
+
+## Learning Rate
+lr: 1e-4
+lr_t0: 10
+
+## Contrastive
+contrastive: True
+clr: 1e-5
+clr_t0: 10
+
+## Margin
+margin_fn: 'tanh_decay'
+margin_max: 0.25
+margin_t0: 10
