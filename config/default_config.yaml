@@ -23,8 +23,6 @@ latent_distance: "Cosine" # Distance metric to use in learned co-embedding space
 
 # Training
 epochs: 50 # Number of epochs to train for
-
-## Batching
 batch_size: 32 # Size of batch for binary data set
 contrastive_batch_size: 256 # Size of batch for contrastive data set
 shuffle: True # Whether to shuffle training data before batching
