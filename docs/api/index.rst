@@ -1,33 +1,41 @@
 API
 ===
 
-conplex_dti.cli
-===============
+Command Line Interface
+----------------------
 
+Train
+^^^^^
 .. automodule:: conplex_dti.cli.train
     :members:
     :undoc-members:
     :show-inheritance:
 
+Download
+^^^^^^^^
 .. automodule:: conplex_dti.cli.download
     :members:
     :undoc-members:
     :show-inheritance:
 
-conplex_dti.model
------------------
+Models
+------
 
+Architectures
+^^^^^^^^^^^^^
 .. automodule:: conplex_dti.model.architectures
     :members:
     :undoc-members:
     :show-inheritance:
 
+Margin
+^^^^^^
 .. automodule:: conplex_dti.model.margin
     :members:
     :undoc-members:
     :show-inheritance:
 
-conplex_dti.featurizer
+Featurizers
 ----------------------
 
 .. automodule:: conplex_dti.featurizer.base
@@ -35,18 +43,22 @@ conplex_dti.featurizer
     :undoc-members:
     :show-inheritance:
 
+Protein
+^^^^^^^
 .. automodule:: conplex_dti.featurizer.protein
     :members:
     :undoc-members:
     :show-inheritance:
 
+Molecule
+^^^^^^^^
 .. automodule:: conplex_dti.featurizer.molecule
     :members:
     :undoc-members:
     :show-inheritance:
 
-conplex_dti.dataset
--------------------
+Data Modules
+------------
 
 .. automodule:: conplex_dti.dataset.datamodules
     :members:
