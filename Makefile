@@ -21,7 +21,8 @@ poetry-remove:
 install:
 	poetry lock -n && poetry export --without-hashes > requirements.txt
 	poetry install -n
-	-poetry run mypy --install-types --non-interactive ./
+	# poetry run pip install torch==1.13.1+cu116 -f https://download.pytorch.org/whl/torch_stable.html
+	# -poetry run mypy --install-types --non-interactive ./
 
 .PHONY: pre-commit-install
 pre-commit-install:

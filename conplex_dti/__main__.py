@@ -1,67 +1,45 @@
-# type: ignore[attr-defined]
-from typing import Optional
+"""
+ConPLex: DTI Prediction
+"""
 
-from enum import Enum
-from random import choice
+import argparse
 
-import typer
-from rich.console import Console
-
-from conplex_dti import version
-from conplex_dti.example import hello
+from conplex_dti import cli, version
 
 
-class Color(str, Enum):
-    white = "white"
-    red = "red"
-    cyan = "cyan"
-    magenta = "magenta"
-    yellow = "yellow"
-    green = "green"
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
 
+    parser.add_argument(
+        "-v", "--version", action="version", version=f"ConPLex {version}"
+    )
+    # parser.add_argument(
+    #     "-c",
+    #     "--citation",
+    #     action=CitationAction,
+    #     nargs=0,
+    #     help="show program's citation and exit",
+    # )
 
-app = typer.Typer(
-    name="conplex-dti",
-    help="Adapting protein language models and contrastive learning for DTI prediction.",
-    add_completion=False,
-)
-console = Console()
+    subparsers = parser.add_subparsers(title="ConPLex Commands", dest="cmd")
+    subparsers.required = True
 
+    modules = {
+        "train": (cli.train, cli.train_parser),
+        "download": (cli.download, cli.download_parser),
+        # "embed": embed,
+        # "evaluate": evaluate,
+        # "predict": predict,
+    }
 
-def version_callback(print_version: bool) -> None:
-    """Print the version of the package."""
-    if print_version:
-        console.print(f"[yellow]conplex-dti[/] version: [bold blue]{version}[/]")
-        raise typer.Exit()
+    for name, (main_func, args_func) in modules.items():
+        sp = subparsers.add_parser(name, description=main_func.__doc__)
+        args_func(sp)
+        sp.set_defaults(main_func=main_func)
 
-
-@app.command(name="")
-def main(
-    name: str = typer.Option(..., help="Person to greet."),
-    color: Optional[Color] = typer.Option(
-        None,
-        "-c",
-        "--color",
-        "--colour",
-        case_sensitive=False,
-        help="Color for print. If not specified then choice will be random.",
-    ),
-    print_version: bool = typer.Option(
-        None,
-        "-v",
-        "--version",
-        callback=version_callback,
-        is_eager=True,
-        help="Prints the version of the conplex-dti package.",
-    ),
-) -> None:
-    """Print a greeting with a giving name."""
-    if color is None:
-        color = choice(list(Color))
-
-    greeting: str = hello(name)
-    console.print(f"[bold {color}]{greeting}[/]")
+    args = parser.parse_args()
+    args.main_func(args)
 
 
 if __name__ == "__main__":
-    app()
+    main()
