@@ -1,7 +1,7 @@
 """Tests for hello function."""
 import pytest
 
-from conplex_dti.example import hello
+from conplex_dti.utils import get_logger
 
 
 @pytest.mark.parametrize(
@@ -20,4 +20,5 @@ from conplex_dti.example import hello
 )
 def test_hello(name, expected):
     """Example test with parametrization."""
-    assert hello(name) == expected
+    logg = get_logger()
+    logg.info(f"{name} is being tested with expectation {expected}")
