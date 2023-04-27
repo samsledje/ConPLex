@@ -54,26 +54,25 @@ def add_args(parser: ArgumentParser):
     log_group.add_argument(
         "--wandb_save",
         help="Log to Weights and Biases",
-        type="str",
         dest="wandb_save",
         action="store_true",
     )
     log_group.add_argument(
         "--log-file",
         help="Log file",
-        type="str",
+        type=str,
         dest="log_file",
     )
     log_group.add_argument(
         "--model-save-dir",
         help="Model save directory",
-        type="str",
+        type=str,
         dest="model_save_dir",
     )
     log_group.add_argument(
         "--data-cache-dir",
         help="Data cache directory",
-        type="str",
+        type=str,
         dest="data_cache_dir",
     )
 
@@ -132,7 +131,7 @@ def add_args(parser: ArgumentParser):
         "--latent-dimension", help="Latent dimension", dest="latent_dimension"
     )
     model_group.add_argument(
-        "latent-distance", help="Latent distance", dest="latent_distance"
+        "--latent-distance", help="Latent distance", dest="latent_distance"
     )
     # Training
     train_group = parser.add_argument_group("Training")
