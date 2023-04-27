@@ -64,3 +64,11 @@ Data Modules
     :members:
     :undoc-members:
     :show-inheritance:
+
+Utils
+-----
+
+.. automodule:: conplex_dti.utils
+    :members:
+    :undoc-members:
+    :show-inheritance:
