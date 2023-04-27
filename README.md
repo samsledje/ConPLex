@@ -1,4 +1,4 @@
-# 🚧🚧🚧 Currently under construction, you can access development code at [ConPLex_dev](https://github.com/samsledje/ConPLex_dev) 🚧🚧🚧
+# 🚧🚧🚧 Currently under construction 🚧🚧🚧
 
 # ConPLex
 
@@ -37,6 +37,25 @@ $ poetry install
 
 ## Usage
 
+### Download benchmark data sets
+```
+$ ...
+```
+
+### Run benchmark training
+```
+$ conplex-dti train --run-id TestRun --config config/default_config.yaml
+```
+
+### Make predictions with a trained model
+```
+$ ...
+```
+
+### Visualize co-embedding space
+```
+$ ...
+```
 
 ## Reference
 If you use ConPLex, please cite [“Contrastive learning in protein language space predicts interactions between drugs and protein targets”](https://www.biorxiv.org/content/10.1101/2022.12.06.519374v1) by Rohit Singh*, Samuel Sledzieski*, Bryan Bryson, Lenore Cowen and Bonnie Berger, currently in press at PNAS.
@@ -44,3 +63,6 @@ If you use ConPLex, please cite [“Contrastive learning in protein language spa
 ```
 TBD .bibtex citation
 ```
+
+### Manuscript Code
+Code used to generate results in the manuscript can be found in the [development repository](https://github.com/samsledje/ConPLex_dev)
