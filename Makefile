@@ -28,6 +28,11 @@ install:
 pre-commit-install:
 	poetry run pre-commit install
 
+#* Publishing
+.PHONY: publish
+publish:
+	poetry publish --build
+
 #* Formatters
 .PHONY: codestyle
 codestyle:
