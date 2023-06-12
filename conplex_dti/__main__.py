@@ -4,14 +4,14 @@ ConPLex: DTI Prediction
 
 import argparse
 
-from conplex_dti import cli, version
+from conplex_dti import __version__, cli
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
 
     parser.add_argument(
-        "-v", "--version", action="version", version=f"ConPLex {version}"
+        "-v", "--version", action="version", version=f"ConPLex {__version__}"
     )
     # parser.add_argument(
     #     "-c",

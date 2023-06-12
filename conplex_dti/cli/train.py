@@ -60,19 +60,16 @@ def add_args(parser: ArgumentParser):
     log_group.add_argument(
         "--log-file",
         help="Log file",
-        type=str,
         dest="log_file",
     )
     log_group.add_argument(
         "--model-save-dir",
         help="Model save directory",
-        type=str,
         dest="model_save_dir",
     )
     log_group.add_argument(
         "--data-cache-dir",
         help="Data cache directory",
-        type=str,
         dest="data_cache_dir",
     )
 
