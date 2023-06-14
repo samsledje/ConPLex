@@ -34,7 +34,7 @@ def get_task_dir(task_name: str, database_root: Path):
     database_root = Path(database_root).resolve()
 
     task_paths = {
-        "biosnap": database_root / "/BIOSNAP/full_data",
+        "biosnap": database_root / "BIOSNAP/full_data",
         "biosnap_prot": database_root / "BIOSNAP/unseen_protein",
         "biosnap_mol": database_root / "BIOSNAP/unseen_drug",
         "bindingdb": database_root / "BindingDB",

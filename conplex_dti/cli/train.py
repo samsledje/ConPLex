@@ -331,11 +331,11 @@ def main(args):
     if config.contrastive:
         logg.info("Loading contrastive data (DUDE)")
         dude_drug_featurizer = get_featurizer(
-            config.drug_featurizer, save_dir=get_task_dir("DUDe")
+            config.drug_featurizer, save_dir=get_task_dir("DUDe", database_root=config.data_cache_dir)
         )
 
         dude_target_featurizer = get_featurizer(
-            config.target_featurizer, save_dir=get_task_dir("DUDe")
+            config.target_featurizer, save_dir=get_task_dir("DUDe", database_root=config.data_cache_dir)
         )
 
         contrastive_datamodule = DUDEDataModule(
