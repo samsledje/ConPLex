@@ -36,7 +36,7 @@ lr: 1e-4
 lr_t0: 10
 
 ## Contrastive
-contrastive: False
+contrastive: True
 clr: 1e-5
 clr_t0: 10
 
