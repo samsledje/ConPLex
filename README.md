@@ -46,7 +46,7 @@ conplex-dti --help
 ### Download benchmark data sets
 
 ```bash
-conplex-dti download --to datasets --benchmarks davis bindingdb biosnap biosnap_prot biosnap_mol --models ConPLex_v1_BindingDB
+conplex-dti download --to datasets --benchmarks davis bindingdb biosnap biosnap_prot biosnap_mol dude --models ConPLex_v1_BindingDB
 ```
 
 ### Run benchmark training
@@ -69,7 +69,7 @@ conplex-dti train --run-id TestRun --config config/default_config.yaml
 
 ## Reference
 
-If you use ConPLex, please cite [Contrastive learning in protein language space predicts interactions between drugs and protein targets]("https://www.pnas.org/doi/10.1073/pnas.2220778120") by Rohit Singh*, Samuel Sledzieski*, Bryan Bryson, Lenore Cowen and Bonnie Berger, currently in press at PNAS.
+If you use ConPLex, please cite [Contrastive learning in protein language space predicts interactions between drugs and protein targets](https://www.pnas.org/doi/10.1073/pnas.2220778120) by Rohit Singh*, Samuel Sledzieski*, Bryan Bryson, Lenore Cowen and Bonnie Berger, currently in press at PNAS.
 
 ```bash
 @article{singh2023contrastive,
