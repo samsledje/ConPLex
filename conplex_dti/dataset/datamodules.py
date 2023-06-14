@@ -606,6 +606,7 @@ class EnzPredDataModule(pl.LightningDataModule):
 class DUDEDataModule(pl.LightningDataModule):
     def __init__(
         self,
+        task_dir: str,
         contrastive_split: str,
         drug_featurizer: Featurizer,
         target_featurizer: Featurizer,
@@ -634,7 +635,7 @@ class DUDEDataModule(pl.LightningDataModule):
         self._device = device
         self._n_neg_per = n_neg_per
 
-        self._data_dir = get_task_dir("dude")
+        self._data_dir = task_dir
         self._split = contrastive_split
         self._split_path = self._data_dir / Path(
             f"dude_{self._split}_type_train_test_split.csv"

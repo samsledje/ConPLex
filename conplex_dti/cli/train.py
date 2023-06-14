@@ -339,6 +339,7 @@ def main(args):
         )
 
         contrastive_datamodule = DUDEDataModule(
+            get_task_dir("DUDe", database_root=config.data_cache_dir),
             config.contrastive_split,
             dude_drug_featurizer,
             dude_target_featurizer,

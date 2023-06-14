@@ -41,6 +41,7 @@ class Featurizer:
     def __init__(self, name: str, shape: int, save_dir: Path = Path().absolute()):
         self._name = name
         self._shape = shape
+        self._save_dir = save_dir
         self._save_path = save_dir / Path(f"{self._name}_features.h5")
 
         self._preloaded = False

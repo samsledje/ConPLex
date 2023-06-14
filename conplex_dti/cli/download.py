@@ -21,6 +21,7 @@ def get_remote_path(bm: str):
         "biosnap": "https://raw.githubusercontent.com/samsledje/ConPLex_dev/main/dataset/BIOSNAP/full_data",
         "biosnap_prot": "https://raw.githubusercontent.com/samsledje/ConPLex_dev/main/dataset/BIOSNAP/unseen_protein",
         "biosnap_mol": "https://raw.githubusercontent.com/samsledje/ConPLex_dev/main/dataset/BIOSNAP/unseen_drug",
+        "dude": "http://cb.csail.mit.edu/cb/conplex/data",
         "ConPLex_v1_BindingDB": "https://cb.csail.mit.edu/cb/conplex/data/models/BindingDB_ExperimentalValidModel.pt",
     }
     return REMOTE_DATA_PATHS[bm]
@@ -44,6 +45,7 @@ def add_args(parser: ArgumentParser):
             "biosnap",
             "biosnap_prot",
             "biosnap_mol",
+            "dude",
 #            "dti_dg",
         ],
         help="Benchmarks to download.",
@@ -85,7 +87,13 @@ def main(args):
         logg.info(f"Downloading {bm}...")
         task_dir = Path(get_task_dir(bm, database_root = args.to))
         os.makedirs(task_dir, exist_ok = True)
-        for fi in ["train.csv", "val.csv", "test.csv"]:
+        
+        if bm == "dude":
+            fi_list = ["full.tsv", "dude_cross_type_train_test_split.csv", "dude_within_type_train_test_split.csv"]
+        else:
+            fi_list = ["train.csv", "val.csv", "test.csv"]
+        
+        for fi in fi_list:
             local_path = task_dir / fi
             remote_base = get_remote_path(bm)
             remote_path = f"{remote_base}/{fi}"
