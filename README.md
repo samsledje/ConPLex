@@ -43,10 +43,14 @@ conplex-dti --help
 
 ## Usage
 
-### Download benchmark data sets
+### Download benchmark data sets and pre-trained models
 
 ```bash
-conplex-dti download --to datasets --benchmarks davis bindingdb biosnap biosnap_prot biosnap_mol dude --models ConPLex_v1_BindingDB
+conplex-dti download --to datasets --benchmarks davis bindingdb biosnap biosnap_prot biosnap_mol dude
+```
+
+```bash
+conplex-dti download --to models --models ConPLex_v1_BindingDB
 ```
 
 ### Run benchmark training
@@ -58,8 +62,10 @@ conplex-dti train --run-id TestRun --config config/default_config.yaml
 ### Make predictions with a trained model
 
 ```bash
-conplex-dti predict --data-file ./data/drug_target_pairs.tsv --model-path ./models/ConPLex_v1_BindingDB.pt --outfile ./results.tsv
+conplex-dti predict --data-file [pair predict file].tsv --model-path ./models/ConPLex_v1_BindingDB.pt --outfile ./results.tsv
 ```
+
+Format of `[pair predict file].tsv` should be `[protein ID]\t[molecule ID]\t[protein Sequence]\t[molecule SMILES]`
 
 ### Visualize co-embedding space
 
