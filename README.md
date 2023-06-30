@@ -35,7 +35,7 @@ cd ConPLex
 conda create -n conplex-dti python=3.9
 conda activate conplex-dti
 make poetry-download
-export PATH=[poetry install location]:PATH
+export PATH="[poetry  install  location]:$PATH"
 export PYTHON_KEYRING_BACKEND=keyring.backends.null.Keyring
 make install
 conplex-dti --help
@@ -58,7 +58,7 @@ conplex-dti train --run-id TestRun --config config/default_config.yaml
 ### Make predictions with a trained model
 
 ```bash
-...
+conplex-dti predict --data-file ./data/drug_target_pairs.tsv --model-path ./models/ConPLex_v1_BindingDB.pt --outfile ./results.tsv
 ```
 
 ### Visualize co-embedding space
