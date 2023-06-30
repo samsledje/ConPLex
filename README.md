@@ -58,7 +58,7 @@ conplex-dti train --run-id TestRun --config config/default_config.yaml
 ### Make predictions with a trained model
 
 ```bash
-conplex-dti predict --data-file ./data/drug_target_pairs.tsv --model-path ./models/ConPLex_v1_BindingDB.pt --results-ofile ./results.tsv
+conplex-dti predict --data-file ./data/drug_target_pairs.tsv --model-path ./models/ConPLex_v1_BindingDB.pt --outfile ./results.tsv
 ```
 
 ### Visualize co-embedding space

@@ -5,9 +5,11 @@ import pandas as pd
 import torch
 from torch.utils.data import DataLoader
 
-from conplex_dti.featurizer import MorganFeaturizer, ProtBertFeaturizer
-from conplex_dti.model.architectures import SimpleCoembeddingNoSigmoid
-from conplex_dti.utils import set_random_seed
+from ..featurizer import MorganFeaturizer, ProtBertFeaturizer
+from ..model.architectures import SimpleCoembeddingNoSigmoid
+from ..utils import get_logger, set_random_seed
+
+logg = get_logger()
 
 
 def add_args(parser: ArgumentParser):
@@ -26,7 +28,7 @@ def add_args(parser: ArgumentParser):
         help="Path to the file containing the model to use for predictions. Default: ./models/ConPLex_v1_BindingDB.pt",
     )
     parser.add_argument(
-        "--results-ofile",
+        "--outfile",
         type=str,
         required=False,
         default="results.tsv",
@@ -34,11 +36,18 @@ def add_args(parser: ArgumentParser):
         # NOTE: the table is stored in the form [moleculeID] [proteinID] [prediction]
     )
     parser.add_argument(
-        "--features-dir",
+        "--data-dir",
         type=str,
         required=False,
         default=".",
         help="Directory to store the Morgan features and ProtBert .h5 files that are created within to the program. Default: .",
+    )
+    parser.add_argument(
+        "--batch-size",
+        type=int,
+        required=False,
+        default=128,
+        help="Batch size to use for predictions, allowing the program to be adapted to smaller or larger GPU memory. Default: 128",
     )
     parser.add_argument(
         "--random-seed",
@@ -51,6 +60,7 @@ def add_args(parser: ArgumentParser):
 
 
 def main(args):
+    logg.debug(f"Setting random state {args.random_seed}")
     set_random_seed(args.random_seed)
 
     try:
@@ -60,15 +70,16 @@ def main(args):
             names=["proteinID", "moleculeID", "proteinSequence", "moleculeSmiles"],
         )
     except FileNotFoundError:
-        print(f"Could not find data file: {args.data_file}")
+        logg.error(f"Could not find data file: {args.data_file}")
         return
 
-    print(f"Loading model from {args.model_path}")
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-    target_featurizer = ProtBertFeaturizer(
-        save_dir=args.features_dir, per_tok=False
-    ).cuda(device)
-    drug_featurizer = MorganFeaturizer(save_dir=args.features_dir).cuda(device)
+    logg.info(f"Using CUDA device {device}")
+    logg.info(f"Loading model from {args.model_path}")
+    target_featurizer = ProtBertFeaturizer(save_dir=args.data_dir, per_tok=False).cuda(
+        device
+    )
+    drug_featurizer = MorganFeaturizer(save_dir=args.data_dir).cuda(device)
 
     drug_featurizer.preload(query_df["moleculeSmiles"].unique())
     target_featurizer.preload(query_df["proteinSequence"].unique())
@@ -84,9 +95,9 @@ def main(args):
         (drug_featurizer(r["moleculeSmiles"]), target_featurizer(r["proteinSequence"]))
         for _, r in query_df.iterrows()
     ]
-    dloader = DataLoader(dt_feature_pairs, batch_size=128, shuffle=False)
+    dloader = DataLoader(dt_feature_pairs, batch_size=args.batch_size, shuffle=False)
 
-    print(f"Generating predictions...")
+    logg.info(f"Generating predictions...")
     preds = []
     with torch.set_grad_enabled(False):
         for b in dloader:
@@ -97,8 +108,8 @@ def main(args):
     result_df = pd.DataFrame(query_df[["moleculeID", "proteinID"]])
     result_df["Prediction"] = preds
 
-    print(f"Printing ConPLex results to {args.results_ofile}")
-    result_df.to_csv(args.results_ofile, sep="\t", index=False, header=False)
+    logg.info(f"Printing ConPLex results to {args.outfile}")
+    result_df.to_csv(args.outfile, sep="\t", index=False, header=False)
 
 
 if __name__ == "__main__":
