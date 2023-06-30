@@ -36,11 +36,18 @@ def add_args(parser: ArgumentParser):
         # NOTE: the table is stored in the form [moleculeID] [proteinID] [prediction]
     )
     parser.add_argument(
-        "--data-dir",
+        "--data-cache-dir",
         type=str,
         required=False,
         default=".",
         help="Directory to store the Morgan features and ProtBert .h5 files that are created within to the program. Default: .",
+    )
+    parser.add_argument(
+        "--device",
+        type=str,
+        required=False,
+        default="cuda:0",
+        help="Device to use for predictions. Default: cuda:0",
     )
     parser.add_argument(
         "--batch-size",
@@ -56,6 +63,7 @@ def add_args(parser: ArgumentParser):
         default=61998,
         help="Random seed to use for reproducibility. Default: 61998",
     )
+
     return parser
 
 
@@ -73,13 +81,13 @@ def main(args):
         logg.error(f"Could not find data file: {args.data_file}")
         return
 
-    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+    device = torch.device(args.device)
     logg.info(f"Using CUDA device {device}")
     logg.info(f"Loading model from {args.model_path}")
-    target_featurizer = ProtBertFeaturizer(save_dir=args.data_dir, per_tok=False).cuda(
-        device
-    )
-    drug_featurizer = MorganFeaturizer(save_dir=args.data_dir).cuda(device)
+    target_featurizer = ProtBertFeaturizer(
+        save_dir=args.data_cache_dir, per_tok=False
+    ).cuda(device)
+    drug_featurizer = MorganFeaturizer(save_dir=args.data_cache_dir).cuda(device)
 
     drug_featurizer.preload(query_df["moleculeSmiles"].unique())
     target_featurizer.preload(query_df["proteinSequence"].unique())
