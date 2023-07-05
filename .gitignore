@@ -2,9 +2,9 @@
 # Edit at https://www.toptal.com/developers/gitignore?templates=linux,osx,git,visualstudiocode,python,jupyternotebooks
 
 # Project Specific
-wandb/
-models/
-best_models/
+/wandb/
+/models/
+/best_models/
 
 ### Git ###
 # Created by git for backups. To disable backups in Git:
