@@ -3,7 +3,7 @@ wandb_proj: NoSigmoidTest # Weights and Biases project to log results to.
 wandb_save: True # Whether or not to log to Weights and Biases.
 log_file: ./logs/scratch_testing.log # Location of log file
 model_save_dir: ./best_models # Location to save best models
-data_cache_dir: /data/cb/samsl/Adapting_PLM_DTI/dataset # Location of downloaded data (use `conplex_dti download`)
+data_cache_dir: ./datasets # Location of downloaded data (use `conplex_dti download`)
 
 # Misc
 device: 0 # CUDA device to use for training
