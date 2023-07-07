@@ -7,7 +7,6 @@ from .base import db_session as db_session
 # All models.
 
 
-
 def register_models(app: flask.Flask) -> None:
     """
     Register the application's models.
