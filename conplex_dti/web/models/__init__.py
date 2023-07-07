@@ -5,6 +5,7 @@ from .base import db_engine as db_engine
 from .base import db_session as db_session
 
 # All models.
+from .users import User
 
 
 def register_models(app: flask.Flask) -> None:
