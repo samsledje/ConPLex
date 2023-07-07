@@ -3,7 +3,7 @@ import fsw.models
 import sqlalchemy
 import sqlalchemy.orm
 
-db_engine = sqlalchemy.create_engine(flask.current_app.config("DATABASE_URL"))
+db_engine = sqlalchemy.create_engine(flask.current_app.config["DATABASE_URL"])
 db_session = sqlalchemy.orm.scoped_session(sqlalchemy.orm.sessionmaker(bind=db_engine))
 
 
