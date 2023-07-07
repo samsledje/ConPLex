@@ -924,7 +924,7 @@ tqdm = ["tqdm"]
 
 [[package]]
 name = "fsw"
-version = "0.3.1"
+version = "0.3.2"
 description = "A modular Flask toolkit."
 optional = false
 python-versions = ">=3.8"
@@ -939,8 +939,8 @@ wtforms = ">=3.0,<4"
 [package.source]
 type = "git"
 url = "https://github.com/bhushan-mohanraj/fsw.git"
-reference = "0.3.1"
-resolved_reference = "0d921aea4d6fd557e3d04536b7323df6053174b9"
+reference = "0.3.2"
+resolved_reference = "24a047a918227ed2d782349d81034d852eb66b6e"
 
 [[package]]
 name = "fuzzywuzzy"
@@ -3905,4 +3905,4 @@ testing = ["big-O", "flake8 (<5)", "jaraco.functools", "jaraco.itertools", "more
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "b5fae61322bb4bd6dde7d7615edcf3ea70426840d83bb6a323c8c2c2b3d3b0f2"
+content-hash = "e0fb54ea156155687056571bd3309657a90f1227fc17f5a48c9f42c463fca002"
