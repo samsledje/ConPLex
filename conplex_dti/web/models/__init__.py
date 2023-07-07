@@ -1,10 +1,11 @@
+import flask
+
 from .base import Model as Model
 from .base import db_engine as db_engine
 from .base import db_session as db_session
 
 # All models.
 
-import flask
 
 
 def register_models(app: flask.Flask) -> None:
