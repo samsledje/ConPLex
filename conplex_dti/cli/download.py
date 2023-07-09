@@ -88,8 +88,8 @@ def main(args):
     benchmarks = args.benchmarks or []
     for bm in benchmarks:
         logg.info(f"Downloading {bm}...")
-        task_dir = Path(get_task_dir(bm, database_root=args.to))
-        os.makedirs(task_dir, exist_ok=True)
+        task_dir = Path(get_task_dir(bm, database_root = args.to))
+        os.makedirs(task_dir, exist_ok = True)
 
         if bm == "dude":
             fi_list = [

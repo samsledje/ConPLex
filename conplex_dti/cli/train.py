@@ -28,10 +28,11 @@ from ..dataset import (
 from ..featurizer import get_featurizer
 from ..model import architectures as model_types
 from ..model.margin import MarginScheduledLossFunction
-from ..utils import config_logger, get_logger, set_random_seed
+from ..utils import config_logger, set_random_seed
 
-logg = get_logger()
-
+logg = config_logger(
+    None, "%(asctime)s [%(levelname)s] %(message)s", level=2, use_stdout=True
+)
 
 def add_args(parser: ArgumentParser):
     parser.add_argument("--run-id", required=True, help="Experiment ID", dest="run_id")

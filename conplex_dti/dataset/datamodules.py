@@ -151,6 +151,29 @@ class BinaryDataset(Dataset):
 
         return drug, target, label
 
+class PairedDataset(Dataset):
+    def __init__(self, id0_map, id1_map, id0_feat, id1_feat):
+        self.id0_map = id0_map
+        self.id1_map = id1_map
+        
+        self.id0_feat = id0_feat
+        self.id1_feat = id1_feat
+        
+        self.pairs = []
+        
+        for id0 in self.id0_map.keys():
+            for id1 in self.id1_map.keys():
+                self.pairs.append((id0, id1))
+                
+    def __len__(self):
+        return len(self.pairs)
+    
+    def __getitem__(self, idx):
+        id0, id1 = self.pairs[idx]
+        feat0 = self.id0_feat(self.id0_map[id0])
+        feat1 = self.id1_feat(self.id1_map[id1])
+        
+        return (feat0, feat1)
 
 class ContrastiveDataset(Dataset):
     def __init__(
