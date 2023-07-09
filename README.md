@@ -22,6 +22,8 @@ Sequence-based prediction of drug-target interactions has the potential to accel
 
 ### Install from PyPI
 
+You should first have a version of [`cudatoolkit`](https://anaconda.org/nvidia/cudatoolkit) compatible with your system installed. Then run
+
 ```bash
 pip install conplex-dti
 conplex-dti --help
