@@ -11,13 +11,12 @@ import numpy as np
 import pandas as pd
 import torch
 import torchmetrics
+import wandb
 from omegaconf import OmegaConf
 from torch import nn
 from torch.autograd import Variable
 from torch.utils import data
 from tqdm.auto import tqdm
-
-import wandb
 
 from ..dataset import (
     DTIDataModule,
@@ -331,11 +330,13 @@ def main(args):
     if config.contrastive:
         logg.info("Loading contrastive data (DUDE)")
         dude_drug_featurizer = get_featurizer(
-            config.drug_featurizer, save_dir=get_task_dir("DUDe", database_root=config.data_cache_dir)
+            config.drug_featurizer,
+            save_dir=get_task_dir("DUDe", database_root=config.data_cache_dir),
         )
 
         dude_target_featurizer = get_featurizer(
-            config.target_featurizer, save_dir=get_task_dir("DUDe", database_root=config.data_cache_dir)
+            config.target_featurizer,
+            save_dir=get_task_dir("DUDe", database_root=config.data_cache_dir),
         )
 
         contrastive_datamodule = DUDEDataModule(
