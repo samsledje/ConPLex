@@ -1,0 +1,23 @@
+{% extends 'base.html.jinja' %}
+
+{% import 'macros.html.jinja' as macros %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+    <section>
+        <div class="container">
+            <div class="card my-5 mx-auto w-50">
+                <div class="card-body">
+                    <h1 class="card-title">{{ title }}</h1>
+
+                    <form method="POST" enctype="multipart/form-data">
+                        {{ macros.render_fields(form) }}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block footer %}{% endblock %}
