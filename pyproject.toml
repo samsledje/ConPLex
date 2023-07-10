@@ -49,6 +49,7 @@ typer = {extras = ["all"], version = "^0.4.0"}
 rich = "^13.3.2"
 fsw = {git = "https://github.com/bhushan-mohanraj/fsw.git", rev = "0.3.2"}
 email-validator = "^2.0.0.post2"
+alembic = "^1.11.0"
 
 [tool.poetry.group.dev.dependencies]
 bandit = "^1.7.1"
