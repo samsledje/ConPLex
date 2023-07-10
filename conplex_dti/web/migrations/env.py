@@ -18,7 +18,12 @@ if config.config_file_name is not None:
 # for 'autogenerate' support
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
-target_metadata = None
+import conplex_dti.web
+
+with conplex_dti.web.create_app().app_context():
+    import conplex_dti.web.models
+
+target_metadata = conplex_dti.web.models.Model.metadata
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:
