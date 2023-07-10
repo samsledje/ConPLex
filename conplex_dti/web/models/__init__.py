@@ -4,7 +4,7 @@ from .base import Model as Model
 from .base import db_engine as db_engine
 from .base import db_session as db_session
 
-# All models.
+# All models (for imports and Alembic).
 from .users import User
 
 
