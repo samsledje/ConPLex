@@ -17,4 +17,4 @@ def register_views(app: flask.Flask) -> None:
 
     @app.route("/")
     def index():
-        return "Index"
+        return flask.render_template("index.html.jinja")
