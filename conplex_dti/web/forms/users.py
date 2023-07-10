@@ -14,8 +14,12 @@ class EmailAddressColumnFieldConverter(fsw.forms.models.StringColumnFieldConvert
         return field_kwargs
 
 
-LoginForm = Form.get_model_form(
+BaseLoginForm = Form.get_model_form(
     models.User,
     ["email_address"],
     {"email_address": EmailAddressColumnFieldConverter()},
 )
+
+
+class LoginForm(BaseLoginForm):
+    submit = wtforms.fields.SubmitField("Send Login Email")
