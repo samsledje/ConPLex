@@ -5,6 +5,7 @@
 /wandb/
 /models/
 /best_models/
+/web.sqlite3
 
 ### Git ###
 # Created by git for backups. To disable backups in Git:
