@@ -17,6 +17,8 @@ def create_app() -> flask.Flask:
         # TODO: For deployment, use PostgreSQL.
         DATABASE_URL="sqlite:///web.sqlite3",
         UPLOADS_FOLDER_PATH=pathlib.Path("web-uploads"),
+        # Set the maximum upload size to 64 megabytes.
+        MAX_CONTENT_LENGTH=64 * 1000 * 1000,
         EMAIL_SMTP_SERVER_URL="smtp-mail.outlook.com",
         # Port 587 is for TLS.
         EMAIL_SMTP_PORT=587,
