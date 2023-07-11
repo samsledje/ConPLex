@@ -88,3 +88,37 @@ class SetCreateView(fsw.views.CreateModelView):
         self.file.save(uploads_folder_path / self.file.filename)
 
         self.request_model_instance.upload_filename = self.file.filename
+
+
+class DrugSetCreateView(SetCreateView):
+    model = models.DrugSet
+    form_class = forms.DrugSetForm
+
+    def get_template_context(self) -> dict:
+        template_context = super().get_template_context()
+        template_context["title"] = "Upload a Drug Set"
+        return template_context
+
+
+bp.add_url_rule(
+    "/drug-sets/create/",
+    view_func=DrugSetCreateView.as_view("create_drug_set"),
+    methods=["GET", "POST"],
+)
+
+
+class TargetSetCreateView(SetCreateView):
+    model = models.TargetSet
+    form_class = forms.TargetSetForm
+
+    def get_template_context(self) -> dict:
+        template_context = super().get_template_context()
+        template_context["title"] = "Upload a Target Set"
+        return template_context
+
+
+bp.add_url_rule(
+    "/target-sets/create/",
+    view_func=TargetSetCreateView.as_view("create_target_set"),
+    methods=["GET", "POST"],
+)
