@@ -6,6 +6,8 @@ from .base import db_session as db_session
 
 # All models (for imports and Alembic).
 from .users import User
+from .sets import DrugSet
+from .sets import TargetSet
 
 
 def register_models(app: flask.Flask) -> None:
