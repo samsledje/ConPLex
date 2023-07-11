@@ -73,7 +73,9 @@ class DrugSetCreateView(fsw.views.CreateModelView):
 
         file_suffix = "".join(pathlib.Path(self.file.filename).suffixes)
         if file_suffix.lower() != ".tsv":
-            self.request_form.file.errors.append("The uploaded file was not a TSV file.")
+            self.request_form.file.errors.append(
+                "The uploaded file was not a TSV file."
+            )
             return False
 
         return True
@@ -83,7 +85,9 @@ class DrugSetCreateView(fsw.views.CreateModelView):
 
         # Create a random (and secure) file name.
         file_suffix = "".join(pathlib.Path(self.file.filename).suffixes)
-        self.file.filename = str(pathlib.Path(secrets.token_urlsafe(64)).with_suffix(file_suffix))
+        self.file.filename = str(
+            pathlib.Path(secrets.token_urlsafe(64)).with_suffix(file_suffix)
+        )
 
         # Ensure the uploads' folder exists and save the file.
         uploads_folder_path = flask.current_app.config["UPLOADS_FOLDER_PATH"]
