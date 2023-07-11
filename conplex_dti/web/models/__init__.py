@@ -1,10 +1,9 @@
 import flask
 
+# Import all models (for imports and Alembic).
 from .base import Model as Model
 from .base import db_engine as db_engine
 from .base import db_session as db_session
-
-# All models (for imports and Alembic).
 from .pairings import Pairing as Pairing
 from .sets import DrugSet as DrugSet
 from .sets import Set as Set
