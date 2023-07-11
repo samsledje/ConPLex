@@ -6,6 +6,7 @@
 /models/
 /best_models/
 /web.sqlite3
+/web-uploads/
 
 ### Git ###
 # Created by git for backups. To disable backups in Git:
