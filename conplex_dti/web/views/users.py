@@ -17,8 +17,7 @@ import flask
 import fsw.views
 import sqlalchemy
 
-from .. import forms
-from .. import models
+from .. import forms, models
 
 bp = flask.Blueprint(
     "users",

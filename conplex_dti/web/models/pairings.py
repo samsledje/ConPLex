@@ -1,9 +1,8 @@
 import sqlalchemy.orm
 
 from .base import Model
+from .sets import DrugSet, TargetSet
 from .users import User
-from .sets import DrugSet
-from .sets import TargetSet
 
 
 class Pairing(Model):
