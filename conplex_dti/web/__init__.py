@@ -12,7 +12,7 @@ def create_app() -> flask.Flask:
     app = flask.Flask(__name__)
 
     app.config.from_mapping(
-        # Generate the secret key with `secrets.token_hex(64)`.
+        # Generate the secret key with `secrets.token_bytes(64)`.
         SECRET_KEY=os.environ.get("SECRET_KEY"),
         # TODO: For deployment, use PostgreSQL.
         DATABASE_URL="sqlite:///web.sqlite3",
