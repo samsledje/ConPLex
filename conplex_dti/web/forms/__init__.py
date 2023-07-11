@@ -1,2 +1,2 @@
 # All forms.
-from .users import LoginForm
+from .users import LoginForm as LoginForm
