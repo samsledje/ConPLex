@@ -6,7 +6,6 @@ from .base import db_engine as db_engine
 from .base import db_session as db_session
 from .pairings import Pairing as Pairing
 from .sets import DrugSet as DrugSet
-from .sets import Set as Set
 from .sets import TargetSet as TargetSet
 from .users import User as User
 
