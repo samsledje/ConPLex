@@ -3,11 +3,12 @@ import wtforms
 from .. import models
 from .base import Form
 
-BaseSetForm = Form.get_model_form(models.Set, ["name"])
+BaseDrugSetForm = Form.get_model_form(models.DrugSet, ["name"])
+BaseTargetSetForm = Form.get_model_form(models.TargetSet, ["name"])
 
 
 # NOTE: The caller must verify that the files are TSV files with valid columns.
-class DrugSetForm(BaseSetForm):
+class DrugSetForm(BaseDrugSetForm):
     file = wtforms.fields.FileField(
         "Drug TSV File",
         [wtforms.validators.InputRequired()],
@@ -21,7 +22,7 @@ class DrugSetForm(BaseSetForm):
     submit = wtforms.fields.SubmitField("Submit")
 
 
-class TargetSetForm(BaseSetForm):
+class TargetSetForm(BaseTargetSetForm):
     file = wtforms.fields.FileField(
         "Target TSV File",
         [wtforms.validators.InputRequired()],
