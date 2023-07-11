@@ -32,6 +32,8 @@ LOGIN_TOKEN_TO_USER_MAP: dict[str, models.User] = {}
 def load_user() -> None:
     if "user_id" in flask.session:
         flask.g.user = models.db_session.get(models.User, flask.session["user_id"])
+    else:
+        flask.g.user = None
 
 
 class LoginView(fsw.views.FormView):
