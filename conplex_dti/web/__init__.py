@@ -1,4 +1,5 @@
 import os
+import pathlib
 import secrets
 
 import flask
@@ -15,6 +16,7 @@ def create_app() -> flask.Flask:
         SECRET_KEY=os.environ.get("SECRET_KEY"),
         # TODO: For deployment, use PostgreSQL.
         DATABASE_URL="sqlite:///web.sqlite3",
+        UPLOADS_FOLDER_PATH=pathlib.Path("web-uploads"),
         EMAIL_SMTP_SERVER_URL="smtp-mail.outlook.com",
         # Port 587 is for TLS.
         EMAIL_SMTP_PORT=587,
