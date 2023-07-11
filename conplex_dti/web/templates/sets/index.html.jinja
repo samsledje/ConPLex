@@ -1,0 +1,35 @@
+{% extends 'base.html.jinja' %}
+
+{% block content %}
+    <section class="mb-3">
+        <div class="container">
+            <h1>Drug Sets</h1>
+
+            {% if drug_sets %}
+                <ul>
+                    {% for drug_set in drug_sets %}
+                        <li>{{ drug_set.name }}</li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                You have not uploaded any drug sets.
+            {% endif %}
+        </div>
+    </section>
+
+    <section class="mb-3">
+        <div class="container">
+            <h1>Target Sets</h1>
+
+            {% if target_sets %}
+                <ul>
+                    {% for target_set in target_sets %}
+                        <li>{{ target_set.name }}</li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                You have not uploaded any target sets.
+            {% endif %}
+        </div>
+    </section>
+{% endblock %}
