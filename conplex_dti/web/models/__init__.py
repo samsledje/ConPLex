@@ -8,6 +8,7 @@ from .base import db_session as db_session
 from .users import User
 from .sets import DrugSet
 from .sets import TargetSet
+from .pairings import Pairing
 
 
 def register_models(app: flask.Flask) -> None:
