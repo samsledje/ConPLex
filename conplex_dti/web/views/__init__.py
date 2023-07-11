@@ -1,7 +1,6 @@
 import flask
 
-from . import users
-from . import sets
+from . import sets, users
 
 
 def register_views(app: flask.Flask) -> None:
