@@ -6,6 +6,7 @@ from .base import db_session as db_session
 
 # All models (for imports and Alembic).
 from .users import User
+from .sets import Set
 from .sets import DrugSet
 from .sets import TargetSet
 from .pairings import Pairing
