@@ -11,7 +11,6 @@ BaseTargetSetForm = Form.get_model_form(models.TargetSet, ["name"])
 class DrugSetForm(BaseDrugSetForm):
     file = wtforms.fields.FileField(
         "Drug TSV File",
-        [wtforms.validators.InputRequired()],
         description=(
             "A TSV file with two columns,"
             " the first containing drug IDs"
@@ -25,7 +24,6 @@ class DrugSetForm(BaseDrugSetForm):
 class TargetSetForm(BaseTargetSetForm):
     file = wtforms.fields.FileField(
         "Target TSV File",
-        [wtforms.validators.InputRequired()],
         description=(
             "A TSV file with two columns,"
             " the first containing protein IDs"
