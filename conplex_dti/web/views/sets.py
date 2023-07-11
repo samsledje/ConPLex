@@ -39,23 +39,16 @@ def index():
     )
 
 
-class DrugSetCreateView(fsw.views.CreateModelView):
+class SetCreateView(fsw.views.CreateModelView):
     decorators = [decorators.user_required]
 
     database_session = models.db_session
-    model = models.DrugSet
-    form_class = forms.DrugSetForm
     template_name = "form.html.jinja"
 
     file = None
 
     def get_redirect_url(self):
         return flask.url_for(".index")
-
-    def get_template_context(self) -> dict:
-        template_context = super().get_template_context()
-        template_context["title"] = "Upload a Drug Set"
-        return template_context
 
     def validate_form(self) -> bool:
         if not super().validate_form():
