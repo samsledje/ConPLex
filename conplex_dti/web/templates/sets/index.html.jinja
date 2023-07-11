@@ -3,7 +3,13 @@
 {% block content %}
     <section class="mb-3">
         <div class="container">
-            <h1>Drug Sets</h1>
+            <div class="d-flex mb-2">
+                <h1 class="mb-0">Drug Sets</h1>
+
+                <a class="btn btn-primary ms-auto my-auto" href="{{ url_for('sets.create_drug_set') }}">
+                    Upload a Drug Set
+                </a>
+            </div>
 
             {% if drug_sets %}
                 <ul>
@@ -19,7 +25,13 @@
 
     <section class="mb-3">
         <div class="container">
-            <h1>Target Sets</h1>
+            <div class="d-flex mb-2">
+                <h1 class="mb-0">Target Sets</h1>
+
+                <a class="btn btn-primary ms-auto my-auto" href="{{ url_for('sets.create_target_set') }}">
+                    Upload a Target Set
+                </a>
+            </div>
 
             {% if target_sets %}
                 <ul>
