@@ -15,6 +15,7 @@ class DrugSetForm(BaseDrugSetForm):
             "A TSV file with two columns,"
             " the first containing drug IDs"
             " and the second containing SMILES strings."
+            " The TSV file should not have a header row."
         ),
     )
 
@@ -28,6 +29,7 @@ class TargetSetForm(BaseTargetSetForm):
             "A TSV file with two columns,"
             " the first containing protein IDs"
             " and the second containing amino-acid sequences."
+            " The TSV file should not have a header row."
         ),
     )
 
