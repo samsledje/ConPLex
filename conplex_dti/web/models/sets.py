@@ -1,3 +1,5 @@
+import typing
+
 import sqlalchemy
 import sqlalchemy.orm
 import sqlalchemy.types
@@ -16,6 +18,8 @@ class Set(Model):
     name: sqlalchemy.orm.Mapped[str] = sqlalchemy.orm.mapped_column(
         sqlalchemy.types.String(256)
     )
+
+    count: sqlalchemy.orm.Mapped[typing.Optional[int]]
 
     upload_filename: sqlalchemy.orm.Mapped[str] = sqlalchemy.orm.mapped_column(
         sqlalchemy.types.String(256),
