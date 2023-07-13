@@ -17,6 +17,10 @@ class Set(Model):
         sqlalchemy.types.String(256)
     )
 
+    count: sqlalchemy.orm.Mapped[int] = sqlalchemy.orm.mapped_column(
+        server_default=sqlalchemy.text("0")
+    )
+
     upload_filename: sqlalchemy.orm.Mapped[str] = sqlalchemy.orm.mapped_column(
         sqlalchemy.types.String(256),
         doc="The filename for the saved, uploaded TSV file.",
