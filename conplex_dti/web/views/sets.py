@@ -2,6 +2,7 @@
 Uploading and reviewing drug and target sets.
 """
 
+import csv
 import pathlib
 import secrets
 
@@ -70,6 +71,20 @@ class SetCreateView(fsw.views.CreateModelView):
                 "The uploaded file was not a TSV file."
             )
             return False
+
+        # Check that the file is tab-separated and contains two columns.
+        tsv_file_reader = csv.reader(self.file.stream, delimiter="\t")
+
+        for i, tsv_row in enumerate(tsv_file_reader):
+            if len(tsv_row) != 2:
+                self.request_form.file.errors.append(
+                    f"The uploaded file (at row {i + 1})"
+                    " does not contain two tab-separated columns."
+                )
+                return False
+
+        # Reset the file stream for future use.
+        self.file.stream.seek(0)
 
         return True
 
