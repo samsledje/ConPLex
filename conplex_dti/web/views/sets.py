@@ -9,6 +9,7 @@ import secrets
 import flask
 import fsw.views
 import sqlalchemy
+import werkzeug
 
 from .. import decorators, forms, models
 
@@ -46,7 +47,7 @@ class SetCreateView(fsw.views.CreateModelView):
     database_session = models.db_session
     template_name = "form.html.jinja"
 
-    file = None
+    file: werkzeug.datastructures.FileStorage
 
     def get_redirect_url(self):
         return flask.url_for(".index")
