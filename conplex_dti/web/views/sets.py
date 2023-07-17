@@ -49,6 +49,8 @@ class SetCreateView(fsw.views.CreateModelView):
 
     file: werkzeug.datastructures.FileStorage
 
+    file_row_count: int
+
     def get_redirect_url(self):
         return flask.url_for(".index")
 
@@ -73,12 +75,14 @@ class SetCreateView(fsw.views.CreateModelView):
             )
             return False
 
-        # Check that the file is tab-separated and contains two columns.
+        # Check that the file is tab-separated and contains two columns,
+        # and determine the number of rows within the file.
         tsv_file_reader = csv.reader(
             (bytes.decode() for bytes in self.file.stream),
             delimiter="\t",
         )
 
+        self.file_row_count = 0
         for i, tsv_row in enumerate(tsv_file_reader):
             if len(tsv_row) != 2:
                 self.request_form.file.errors.append(
@@ -87,6 +91,8 @@ class SetCreateView(fsw.views.CreateModelView):
                 )
                 return False
 
+            self.file_row_count += 1
+
         # Reset the file stream for future use.
         self.file.stream.seek(0)
 
@@ -94,6 +100,7 @@ class SetCreateView(fsw.views.CreateModelView):
 
     def dispatch_valid_form_request(self):
         self.request_model_instance.user_id = flask.g.user.id
+        self.request_model_instance.count = self.file_row_count
 
         # Create a random (and secure) file name.
         file_suffix = "".join(pathlib.Path(self.file.filename).suffixes)

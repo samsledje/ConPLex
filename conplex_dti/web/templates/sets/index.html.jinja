@@ -14,7 +14,13 @@
             {% if drug_sets %}
                 <ul>
                     {% for drug_set in drug_sets %}
-                        <li>{{ drug_set.name }}</li>
+                        <li>
+                            {{ drug_set.name }}
+                            {% if drug_set.count %}
+                                ({{ drug_set.count }}
+                                {% if drug_set.count == 1 %}drug{% else %}drugs{% endif %})
+                            {% endif %}
+                        </li>
                     {% endfor %}
                 </ul>
             {% else %}
@@ -36,7 +42,13 @@
             {% if target_sets %}
                 <ul>
                     {% for target_set in target_sets %}
-                        <li>{{ target_set.name }}</li>
+                        <li>
+                            {{ target_set.name }}
+                            {% if target_set.count %}
+                                ({{ target_set.count }}
+                                {% if target_set.count == 1 %}target{% else %}targets{% endif %})
+                            {% endif %}
+                        </li>
                     {% endfor %}
                 </ul>
             {% else %}
