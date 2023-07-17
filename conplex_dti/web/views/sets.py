@@ -73,7 +73,10 @@ class SetCreateView(fsw.views.CreateModelView):
             return False
 
         # Check that the file is tab-separated and contains two columns.
-        tsv_file_reader = csv.reader(self.file.stream, delimiter="\t")
+        tsv_file_reader = csv.reader(
+            (bytes.decode() for bytes in self.file.stream),
+            delimiter="\t",
+        )
 
         for i, tsv_row in enumerate(tsv_file_reader):
             if len(tsv_row) != 2:
