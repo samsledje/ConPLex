@@ -47,8 +47,12 @@ class SetCreateView(fsw.views.CreateModelView):
     database_session = models.db_session
     template_name = "form.html.jinja"
 
+    # The file object from the Flask request,
+    # determined by `validate_form`.
     file: werkzeug.datastructures.FileStorage
 
+    # The number of rows within the uploaded file,
+    # determined by `validate_form`.
     file_row_count: int
 
     def get_redirect_url(self):
