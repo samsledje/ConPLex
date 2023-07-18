@@ -37,6 +37,7 @@ class TaskStatus(enum.Enum):
 
     RUNNING = "running"
     COMPLETED = "completed"
+    FAILED = "failed"
 
 
 class DrugFeaturizer(enum.Enum):
