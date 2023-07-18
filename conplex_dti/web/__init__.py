@@ -15,6 +15,7 @@ def create_app() -> flask.Flask:
         # Generate the secret key with `secrets.token_bytes(64)`.
         SECRET_KEY=os.environ.get("SECRET_KEY"),
         # TODO: For deployment, use PostgreSQL.
+        # SQLite has limited support for updating existing tables.
         DATABASE_URL="sqlite:///web.sqlite3",
         TASK_QUEUE_SQLITE_FILENAME="web-tasks.sqlite3",
         UPLOADS_FOLDER_PATH=pathlib.Path("web-uploads"),
