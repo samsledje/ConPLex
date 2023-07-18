@@ -1149,6 +1149,20 @@ files = [
 numpy = ">=1.14.5"
 
 [[package]]
+name = "huey"
+version = "2.4.5"
+description = "huey, a little task queue"
+optional = false
+python-versions = "*"
+files = [
+    {file = "huey-2.4.5.tar.gz", hash = "sha256:760cf150deff1fa34b852da37701a5a750d1148f03ea07aa2b3764dc6060b4c3"},
+]
+
+[package.extras]
+backends = ["redis (>=3.0.0)"]
+redis = ["redis (>=3.0.0)"]
+
+[[package]]
 name = "huggingface-hub"
 version = "0.15.1"
 description = "Client library to download and publish models, datasets and other repos on the huggingface.co hub"
@@ -3978,4 +3992,4 @@ testing = ["big-O", "flake8 (<5)", "jaraco.functools", "jaraco.itertools", "more
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "cf3ee1a0d5a4211ac6a9c530a1f79a9556f50e6594c36016c8e5b7d033fb1146"
+content-hash = "bbd464f60e558a1b9c605152f568398f031bd511c56cb7535e81e2018b915abb"
