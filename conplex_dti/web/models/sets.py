@@ -1,5 +1,6 @@
-import datetime
 import typing
+
+import datetime
 
 import sqlalchemy
 import sqlalchemy.orm
@@ -7,7 +8,6 @@ import sqlalchemy.types
 
 from .base import DrugFeaturizer, Model, TargetFeaturizer
 from .users import User
-
 
 # When a drug or target set expires,
 # its CSV file is deleted, while the preprocessed features are retained.
