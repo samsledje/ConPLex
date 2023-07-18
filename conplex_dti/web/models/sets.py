@@ -6,7 +6,7 @@ import sqlalchemy
 import sqlalchemy.orm
 import sqlalchemy.types
 
-from .base import DrugFeaturizer, Model, TargetFeaturizer
+from .base import DrugFeaturizer, Model, TargetFeaturizer, TaskStatus
 from .users import User
 
 # When a drug or target set expires,
@@ -34,6 +34,9 @@ class Set(Model):
         doc="The filename for the saved, uploaded TSV file.",
         unique=True,
     )
+
+    # The status of the featurizer task.
+    featurizer_status: sqlalchemy.orm.Mapped[typing.Optional[TaskStatus]]
 
     def get_expired_at(self) -> datetime.datetime:
         return self.created_at + EXPIRATION_TIMEDELTA
