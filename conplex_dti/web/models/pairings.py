@@ -1,6 +1,6 @@
 import sqlalchemy.orm
 
-from .base import Model
+from .base import DrugFeaturizer, Model, TargetFeaturizer
 from .sets import DrugSet, TargetSet
 from .users import User
 
@@ -20,3 +20,6 @@ class Pairing(Model):
         sqlalchemy.ForeignKey("TargetSet.id")
     )
     target_set: sqlalchemy.orm.Mapped[TargetSet] = sqlalchemy.orm.relationship()
+
+    drug_featurizer: sqlalchemy.orm.Mapped[DrugFeaturizer]
+    target_featurizer: sqlalchemy.orm.Mapped[TargetFeaturizer]
