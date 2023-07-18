@@ -16,6 +16,7 @@ def create_app() -> flask.Flask:
         SECRET_KEY=os.environ.get("SECRET_KEY"),
         # TODO: For deployment, use PostgreSQL.
         DATABASE_URL="sqlite:///web.sqlite3",
+        TASK_QUEUE_SQLITE_FILENAME="web-tasks.sqlite3",
         UPLOADS_FOLDER_PATH=pathlib.Path("web-uploads"),
         # Set the maximum upload size to 64 megabytes.
         MAX_CONTENT_LENGTH=64 * 1000 * 1000,
