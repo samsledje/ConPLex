@@ -62,7 +62,7 @@ class DrugFeaturizerOutput(Model):
     morgan_fingerprint_output: sqlalchemy.orm.Mapped[bytes]
 
 
-DRUG_FEATURIZER_TO_OUTPUT_COLUMN_NAME_MAP: dict[DrugFeaturizer, str] = {
+DRUG_FEATURIZER_TO_OUTPUT_COLUMN_NAME: dict[DrugFeaturizer, str] = {
     DrugFeaturizer.MORGAN_FINGERPRINT: "morgan_fingerprint_output",
 }
 
@@ -76,6 +76,6 @@ class TargetFeaturizerOutput(Model):
     protbert_output: sqlalchemy.orm.Mapped[bytes]
 
 
-TARGET_FEATURIZER_TO_OUTPUT_COLUMN_NAME_MAP: dict[TargetFeaturizer, str] = {
+TARGET_FEATURIZER_TO_OUTPUT_COLUMN_NAME: dict[TargetFeaturizer, str] = {
     TargetFeaturizer.PROTBERT: "protbert_output",
 }
