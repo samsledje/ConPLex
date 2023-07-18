@@ -13,7 +13,7 @@
 
             {% if drug_sets %}
                 <ul>
-                    {% for drug_set in drug_sets %}
+                    {% for drug_set in drug_sets|reverse %}
                         <li>
                             {{ drug_set.name }}
                             {% if drug_set.count %}
@@ -41,7 +41,7 @@
 
             {% if target_sets %}
                 <ul>
-                    {% for target_set in target_sets %}
+                    {% for target_set in target_sets|reverse %}
                         <li>
                             {{ target_set.name }}
                             {% if target_set.count %}
