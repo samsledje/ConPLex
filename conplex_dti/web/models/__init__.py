@@ -5,7 +5,9 @@ from .base import Model as Model
 from .base import db_engine as db_engine
 from .base import db_session as db_session
 from .pairings import Pairing as Pairing
+from .sets import DrugFeaturizerOutput as DrugFeaturizerOutput
 from .sets import DrugSet as DrugSet
+from .sets import TargetFeaturizerOutput as TargetFeaturizerOutput
 from .sets import TargetSet as TargetSet
 from .users import User as User
 

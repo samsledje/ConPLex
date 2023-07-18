@@ -5,7 +5,7 @@ import sqlalchemy
 import sqlalchemy.orm
 import sqlalchemy.types
 
-from .base import Model
+from .base import DrugFeaturizer, Model, TargetFeaturizer
 from .users import User
 
 
@@ -50,3 +50,32 @@ class DrugSet(Set):
 
 class TargetSet(Set):
     pass
+
+
+class DrugFeaturizerOutput(Model):
+    # TODO: Consider SMILES standaridzation.
+    smiles_string: sqlalchemy.orm.Mapped[str] = sqlalchemy.orm.mapped_column(
+        sqlalchemy.types.String(65536),
+        unique=True,
+    )
+
+    morgan_fingerprint_output: sqlalchemy.orm.Mapped[bytes]
+
+
+DRUG_FEATURIZER_TO_OUTPUT_COLUMN_NAME_MAP: dict[DrugFeaturizer, str] = {
+    DrugFeaturizer.MORGAN_FINGERPRINT: "morgan_fingerprint_output",
+}
+
+
+class TargetFeaturizerOutput(Model):
+    sequence: sqlalchemy.orm.Mapped[str] = sqlalchemy.orm.mapped_column(
+        sqlalchemy.types.String(65536),
+        unique=True,
+    )
+
+    protbert_output: sqlalchemy.orm.Mapped[bytes]
+
+
+TARGET_FEATURIZER_TO_OUTPUT_COLUMN_NAME_MAP: dict[TargetFeaturizer, str] = {
+    TargetFeaturizer.PROTBERT: "protbert_output",
+}
