@@ -12,17 +12,35 @@
             </div>
 
             {% if drug_sets %}
-                <ul>
-                    {% for drug_set in drug_sets|reverse %}
-                        <li>
-                            {{ drug_set.name }}
-                            {% if drug_set.count %}
-                                ({{ drug_set.count }}
-                                {% if drug_set.count == 1 %}drug{% else %}drugs{% endif %})
-                            {% endif %}
-                        </li>
-                    {% endfor %}
-                </ul>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Name</th>
+                            <th scope="col">Set Size</th>
+                            <th scope="col">Featurizing</th>
+                            <th scope="col">Expiration Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for drug_set in drug_sets|reverse %}
+                            <tr>
+                                <td>{{ drug_set.name }}</td>
+                                <td>
+                                    {% if drug_set.count %}
+                                        {{ drug_set.count }}
+                                        {% if drug_set.count == 1 %}
+                                            drug
+                                        {% else %}
+                                            drugs
+                                        {% endif %}
+                                    {% endif %}
+                                </td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
             {% else %}
                 You have not uploaded any drug sets.
             {% endif %}
@@ -40,17 +58,35 @@
             </div>
 
             {% if target_sets %}
-                <ul>
-                    {% for target_set in target_sets|reverse %}
-                        <li>
-                            {{ target_set.name }}
-                            {% if target_set.count %}
-                                ({{ target_set.count }}
-                                {% if target_set.count == 1 %}target{% else %}targets{% endif %})
-                            {% endif %}
-                        </li>
-                    {% endfor %}
-                </ul>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Name</th>
+                            <th scope="col">Set Size</th>
+                            <th scope="col">Featurizing</th>
+                            <th scope="col">Expiration Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for target_set in target_sets|reverse %}
+                            <tr>
+                                <td>{{ target_set.name }}</td>
+                                <td>
+                                    {% if target_set.count %}
+                                        {{ target_set.count }}
+                                        {% if target_set.count == 1 %}
+                                            target
+                                        {% else %}
+                                            target
+                                        {% endif %}
+                                    {% endif %}
+                                </td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
             {% else %}
                 You have not uploaded any target sets.
             {% endif %}
