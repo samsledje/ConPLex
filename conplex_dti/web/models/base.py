@@ -1,3 +1,5 @@
+import enum
+
 import flask
 import fsw.models
 import sqlalchemy
@@ -24,3 +26,14 @@ class Model(
 
     # The database session for FSW.
     database_session = db_session
+
+
+class TaskStatus(enum.Enum):
+    """
+    The status of an executed Huey task.
+    Some models will include columns of the form
+    `task_status: sqlalchemy.orm.Mapped[typing.Optional[TaskStatus]]`.
+    """
+
+    RUNNING = "running"
+    COMPLETED = "completed"
