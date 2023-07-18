@@ -37,3 +37,11 @@ class TaskStatus(enum.Enum):
 
     RUNNING = "running"
     COMPLETED = "completed"
+
+
+class DrugFeaturizer(enum.Enum):
+    MORGAN_FINGERPRINT = "Morgan Fingerprint"
+
+
+class TargetFeaturizer(enum.Enum):
+    PROTBERT = "ProtBert"
