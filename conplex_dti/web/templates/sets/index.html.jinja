@@ -36,7 +36,7 @@
                                     {% endif %}
                                 </td>
                                 <td></td>
-                                <td></td>
+                                <td>{{ drug_set.get_expired_at().strftime("%B %d, %Y") }}</td>
                             </tr>
                         {% endfor %}
                     </tbody>
@@ -82,7 +82,7 @@
                                     {% endif %}
                                 </td>
                                 <td></td>
-                                <td></td>
+                                <td>{{ target_set.get_expired_at().strftime("%B %d, %Y") }}</td>
                             </tr>
                         {% endfor %}
                     </tbody>

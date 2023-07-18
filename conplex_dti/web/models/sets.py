@@ -1,3 +1,4 @@
+import datetime
 import typing
 
 import sqlalchemy
@@ -6,6 +7,13 @@ import sqlalchemy.types
 
 from .base import Model
 from .users import User
+
+
+# When a drug or target set expires,
+# its CSV file is deleted, while the preprocessed features are retained.
+# TODO: Create a Huey task to delete expired CSV files each day.
+# TODO: Note that stored times are in UTC.
+EXPIRATION_TIMEDELTA = datetime.timedelta(weeks=2)
 
 
 class Set(Model):
@@ -26,6 +34,9 @@ class Set(Model):
         doc="The filename for the saved, uploaded TSV file.",
         unique=True,
     )
+
+    def get_expired_at(self) -> datetime.datetime:
+        return self.created_at + EXPIRATION_TIMEDELTA
 
     @sqlalchemy.orm.declared_attr
     @classmethod
