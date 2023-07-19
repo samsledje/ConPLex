@@ -7,6 +7,8 @@
 /best_models/
 /web.sqlite3
 /web-tasks.sqlite3
+/web-tasks.sqlite3-shm
+/web-tasks.sqlite3-wal
 /web-uploads/
 
 ### Git ###
