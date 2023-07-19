@@ -6,6 +6,7 @@
 /models/
 /best_models/
 /web.sqlite3
+/web-tasks.sqlite3
 /web-uploads/
 
 ### Git ###
