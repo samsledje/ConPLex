@@ -1,6 +1,6 @@
 import flask
 
-from . import sets, users
+from . import pairings, sets, users
 
 
 def register_views(app: flask.Flask) -> None:
@@ -11,6 +11,7 @@ def register_views(app: flask.Flask) -> None:
     blueprints = [
         users.bp,
         sets.bp,
+        pairings.bp,
     ]
 
     for blueprint in blueprints:
