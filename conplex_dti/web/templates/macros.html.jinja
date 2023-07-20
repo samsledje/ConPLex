@@ -10,14 +10,19 @@
             <div class="mb-3">
                 {{ field.label(class_='form-label') }}
 
+                {% set field_class = 'form-control' %}
+                {% if field.type == 'SelectField' %}
+                    {% set field_class = 'form-select' %}
+                {% endif %}
+
                 {% if field.errors %}
-                    {{ field(class_='form-control is-invalid') }}
+                    {{ field(class_=field_class + ' is-invalid') }}
 
                     {% for error in field.errors %}
                         <div class="invalid-feedback">{{ error }}</div>
                     {% endfor %}
                 {% else %}
-                    {{ field(class_='form-control') }}
+                    {{ field(class_=field_class) }}
                 {% endif %}
 
                 {% if field.description %}
