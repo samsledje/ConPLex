@@ -20,26 +20,27 @@ bp = flask.Blueprint(
 )
 
 
-@bp.route("/")
-@decorators.user_required
-def index():
-    drug_sets = models.db_session.scalars(
-        sqlalchemy.select(models.DrugSet).where(
-            models.DrugSet.user_id == flask.g.user.id
-        )
-    ).all()
-    target_sets = models.db_session.scalars(
-        sqlalchemy.select(models.TargetSet).where(
-            models.TargetSet.user_id == flask.g.user.id
-        )
-    ).all()
+class IndexView(fsw.views.TemplateView):
+    decorators = [decorators.user_required]
 
-    return flask.render_template(
-        "sets/index.html.jinja",
-        drug_sets=drug_sets,
-        target_sets=target_sets,
-    )
+    template_name = "sets/index.html.jinja"
 
+    def get_template_context(self):
+        return {
+            "drug_sets": models.db_session.scalars(
+                sqlalchemy.select(models.DrugSet).where(
+                    models.DrugSet.user_id == flask.g.user.id
+                )
+            ).all(),
+            "target_sets": models.db_session.scalars(
+                sqlalchemy.select(models.TargetSet).where(
+                    models.TargetSet.user_id == flask.g.user.id
+                )
+            ).all(),
+        }
+
+
+bp.add_url_rule("/", view_func=IndexView.as_view("index"))
 
 class SetCreateView(fsw.views.CreateModelView):
     decorators = [decorators.user_required]
