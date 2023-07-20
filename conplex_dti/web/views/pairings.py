@@ -15,6 +15,24 @@ bp = flask.Blueprint(
 )
 
 
+class IndexView(fsw.views.TemplateView):
+    decorators = [decorators.user_required]
+
+    template_name = "pairings/index.html.jinja"
+
+    def get_template_context(self):
+        return {
+            "pairings": models.db_session.scalars(
+                sqlalchemy.select(models.Pairing).where(
+                    models.Pairing.user_id == flask.g.user.id
+                )
+            ).all(),
+        }
+
+
+bp.add_url_rule("/", view_func=IndexView.as_view("index"))
+
+
 class PairingCreateView(fsw.views.CreateModelView):
     decorators = [decorators.user_required]
 
@@ -25,8 +43,7 @@ class PairingCreateView(fsw.views.CreateModelView):
     form_class = forms.PairingForm
 
     def get_redirect_url(self):
-        # TODO: Create a `pairings.index` view.
-        return flask.url_for("index")
+        return flask.url_for(".index")
 
     def get_template_context(self) -> dict:
         template_context = super().get_template_context()
