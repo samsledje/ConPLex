@@ -2,6 +2,7 @@ import csv
 
 import flask
 import sqlalchemy
+import torch
 
 from ... import featurizer, utils
 from .. import helpers, models
@@ -44,7 +45,9 @@ def featurize_drug_set(drug_set_id: int) -> None:
         )
 
         # TODO: Batch.
-        morgan_fingerprint_featurizer = featurizer.MorganFeaturizer().cuda("cuda")
+        morgan_fingerprint_featurizer = featurizer.MorganFeaturizer().cuda(
+            torch.device("cuda:0")
+        )
         morgan_fingerprint_outputs = [
             morgan_fingerprint_featurizer.transform(smiles_string)
             for smiles_string in canonical_smiles_strings_to_featurize
