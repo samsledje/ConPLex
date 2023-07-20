@@ -43,6 +43,7 @@ def featurize_drug_set(drug_set_id: int) -> None:
             canonical_smiles_strings - featurized_canonical_smiles_strings
         )
 
+        # TODO: Batch.
         morgan_fingerprint_featurizer = featurizer.MorganFeaturizer().cuda("cuda")
         morgan_fingerprint_outputs = [
             morgan_fingerprint_featurizer.transform(smiles_string)
