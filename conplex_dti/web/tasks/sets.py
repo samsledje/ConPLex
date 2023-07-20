@@ -44,31 +44,32 @@ def featurize_drug_set(drug_set_id: int) -> None:
             canonical_smiles_strings - featurized_canonical_smiles_strings
         )
 
-        # TODO: Batch.
-        morgan_fingerprint_featurizer = featurizer.MorganFeaturizer().cuda(
-            torch.device("cuda:0")
-        )
-        morgan_fingerprint_outputs = [
-            morgan_fingerprint_featurizer.transform(smiles_string)
-            for smiles_string in canonical_smiles_strings_to_featurize
-        ]
-
-        for (
-            smiles_string,
-            morgan_fingerprint_output,
-        ) in zip(
-            canonical_smiles_strings_to_featurize,
-            morgan_fingerprint_outputs,
-        ):
-            drug_featurizer_output = models.DrugFeaturizerOutput(
-                smiles_string=smiles_string,
-                morgan_fingerprint_output=helpers.convert_tensor_to_column_bytes(
-                    morgan_fingerprint_output
-                ),
+        if canonical_smiles_strings_to_featurize:
+            # TODO: Batch.
+            morgan_fingerprint_featurizer = featurizer.MorganFeaturizer().cuda(
+                torch.device("cuda:0")
             )
+            morgan_fingerprint_outputs = [
+                morgan_fingerprint_featurizer.transform(smiles_string)
+                for smiles_string in canonical_smiles_strings_to_featurize
+            ]
 
-            db_session.add(drug_featurizer_output)
-            db_session.commit()
+            for (
+                smiles_string,
+                morgan_fingerprint_output,
+            ) in zip(
+                canonical_smiles_strings_to_featurize,
+                morgan_fingerprint_outputs,
+            ):
+                drug_featurizer_output = models.DrugFeaturizerOutput(
+                    smiles_string=smiles_string,
+                    morgan_fingerprint_output=helpers.convert_tensor_to_column_bytes(
+                        morgan_fingerprint_output
+                    ),
+                )
+
+                db_session.add(drug_featurizer_output)
+                db_session.commit()
 
         drug_set.featurizer_status = models.TaskStatus.COMPLETED
         db_session.commit()
