@@ -151,6 +151,11 @@ class TargetSetCreateView(SetCreateView):
         template_context["title"] = "Upload a Target Set"
         return template_context
 
+    def _dispatch_valid_form_request(self):
+        response = super()._dispatch_valid_form_request()
+        tasks.featurize_target_set(self.request_model_instance.id)
+        return response
+
 
 bp.add_url_rule(
     "/target-sets/create/",
