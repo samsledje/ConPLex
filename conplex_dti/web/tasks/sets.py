@@ -81,3 +81,53 @@ def featurize_target_set(target_set_id: int) -> None:
     The features for all targets in the given target set
     will be stored as rows within the `TargetFeaturizerOutput` table.
     """
+    with models.db_session() as db_session:
+        target_set = db_session.get(models.TargetSet, target_set_id)
+
+        target_set.featurizer_status = models.TaskStatus.RUNNING
+        db_session.commit()
+
+        file_path = UPLOADS_FOLDER_PATH / target_set.upload_filename
+        with file_path.open() as file:
+            csv_reader = csv.reader(file, delimiter="\t")
+            sequences = [row[1] for row in csv_reader]
+
+        sequences = set(sequences)
+        featurized_sequences = set(
+            db_session.scalars(
+                sqlalchemy.select(models.TargetFeaturizerOutput.sequence).where(
+                    models.TargetFeaturizerOutput.sequence.in_(sequences)
+                )
+            )
+        )
+        sequences_to_featurize = sequences - featurized_sequences
+
+        if sequences_to_featurize:
+            # TODO: Batch.
+            protbert_featurizer = featurizer.ProtBertFeaturizer().cuda(
+                torch.device("cuda:0")
+            )
+            protbert_outputs = [
+                protbert_featurizer.transform(sequence)
+                for sequence in sequences_to_featurize
+            ]
+
+            for (
+                sequence,
+                protbert_output,
+            ) in zip(
+                sequences_to_featurize,
+                protbert_outputs,
+            ):
+                target_featurizer_output = models.TargetFeaturizerOutput(
+                    sequence=sequence,
+                    protbert_output=helpers.convert_tensor_to_column_bytes(
+                        protbert_output
+                    ),
+                )
+
+                db_session.add(target_featurizer_output)
+                db_session.commit()
+
+        target_set.featurizer_status = models.TaskStatus.COMPLETED
+        db_session.commit()
