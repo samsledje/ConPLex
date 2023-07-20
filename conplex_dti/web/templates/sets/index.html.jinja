@@ -35,7 +35,17 @@
                                         {% endif %}
                                     {% endif %}
                                 </td>
-                                <td></td>
+                                <td>
+                                    {% if drug_set.featurizer_status.value == "running" %}
+                                        Running
+                                    {% elif drug_set.featurizer_status.value == "completed" %}
+                                        Completed
+                                    {% elif drug_set.featurizer_status.value == "failed" %}
+                                        Failed
+                                    {% else %}
+                                        Not started
+                                    {% endif %}
+                                </td>
                                 <td>{{ drug_set.get_expired_at().strftime("%B %d, %Y") }}</td>
                             </tr>
                         {% endfor %}
@@ -81,7 +91,17 @@
                                         {% endif %}
                                     {% endif %}
                                 </td>
-                                <td></td>
+                                <td>
+                                    {% if target_set.featurizer_status.value == "running" %}
+                                        Running
+                                    {% elif target_set.featurizer_status.value == "completed" %}
+                                        Completed
+                                    {% elif target_set.featurizer_status.value == "failed" %}
+                                        Failed
+                                    {% else %}
+                                        Not started
+                                    {% endif %}
+                                </td>
                                 <td>{{ target_set.get_expired_at().strftime("%B %d, %Y") }}</td>
                             </tr>
                         {% endfor %}
