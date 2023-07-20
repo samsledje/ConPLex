@@ -11,3 +11,5 @@ BasePairingForm = Form.get_model_form(
 class PairingForm(BasePairingForm):
     drug_set_id = wtforms.fields.SelectField("Drug Set", coerce=int)
     target_set_id = wtforms.fields.SelectField("Target Set", coerce=int)
+
+    submit = wtforms.fields.SubmitField("Submit")
