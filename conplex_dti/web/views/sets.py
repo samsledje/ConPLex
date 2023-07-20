@@ -11,7 +11,7 @@ import fsw.views
 import sqlalchemy
 import werkzeug
 
-from .. import decorators, forms, models
+from .. import decorators, forms, models, tasks
 
 bp = flask.Blueprint(
     "sets",
@@ -128,6 +128,11 @@ class DrugSetCreateView(SetCreateView):
         template_context = super().get_template_context()
         template_context["title"] = "Upload a Drug Set"
         return template_context
+
+    def _dispatch_valid_form_request(self):
+        response = super()._dispatch_valid_form_request()
+        tasks.featurize_drug_set(self.request_model_instance.id)
+        return response
 
 
 bp.add_url_rule(
