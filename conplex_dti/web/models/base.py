@@ -4,6 +4,7 @@ import flask
 import fsw.models
 import sqlalchemy
 import sqlalchemy.orm
+import torch
 
 db_engine = sqlalchemy.create_engine(flask.current_app.config["DATABASE_URL"])
 db_session = sqlalchemy.orm.scoped_session(sqlalchemy.orm.sessionmaker(bind=db_engine))
@@ -46,3 +47,6 @@ class DrugFeaturizer(enum.Enum):
 
 class TargetFeaturizer(enum.Enum):
     PROTBERT = "ProtBert"
+
+
+BINARY_TORCH_TYPE = torch.float32
