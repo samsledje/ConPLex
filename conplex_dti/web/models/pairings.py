@@ -1,6 +1,8 @@
+import typing
+
 import sqlalchemy.orm
 
-from .base import DrugFeaturizer, Model, TargetFeaturizer
+from .base import DrugFeaturizer, Model, TargetFeaturizer, TaskStatus
 from .sets import DrugSet, TargetSet
 from .users import User
 
@@ -23,6 +25,8 @@ class Pairing(Model):
 
     drug_featurizer: sqlalchemy.orm.Mapped[DrugFeaturizer]
     target_featurizer: sqlalchemy.orm.Mapped[TargetFeaturizer]
+
+    model_status: sqlalchemy.orm.Mapped[typing.Optional[TaskStatus]]
 
 
 class ModelOutput(Model):
