@@ -8,6 +8,7 @@ from .base import TargetFeaturizer as TargetFeaturizer
 from .base import TaskStatus as TaskStatus
 from .base import db_engine as db_engine
 from .base import db_session as db_session
+from .pairings import ModelOutput as ModelOutput
 from .pairings import Pairing as Pairing
 from .sets import DrugFeaturizerOutput as DrugFeaturizerOutput
 from .sets import DrugSet as DrugSet
