@@ -6,7 +6,7 @@ import torch
 
 from ... import featurizer, utils
 from .. import helpers, models
-from .base import task_queue
+from .base import TORCH_DEVICE, task_queue
 
 UPLOADS_FOLDER_PATH = flask.current_app.config["UPLOADS_FOLDER_PATH"]
 
@@ -47,7 +47,7 @@ def featurize_drug_set(drug_set_id: int) -> None:
         if canonical_smiles_strings_to_featurize:
             # TODO: Batch.
             morgan_fingerprint_featurizer = featurizer.MorganFeaturizer().cuda(
-                torch.device("cuda:0")
+                TORCH_DEVICE
             )
             morgan_fingerprint_outputs = [
                 morgan_fingerprint_featurizer.transform(smiles_string)
@@ -104,9 +104,7 @@ def featurize_target_set(target_set_id: int) -> None:
 
         if sequences_to_featurize:
             # TODO: Batch.
-            protbert_featurizer = featurizer.ProtBertFeaturizer().cuda(
-                torch.device("cuda:0")
-            )
+            protbert_featurizer = featurizer.ProtBertFeaturizer().cuda(TORCH_DEVICE)
             protbert_outputs = [
                 protbert_featurizer.transform(sequence)
                 for sequence in sequences_to_featurize
