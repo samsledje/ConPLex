@@ -1,7 +1,7 @@
 import flask
 
 # Import all models (for imports and Alembic).
-from .base import BINARY_TORCH_TYPE
+from .base import BINARY_NUMPY_TYPE, BINARY_TORCH_TYPE
 from .base import DrugFeaturizer as DrugFeaturizer
 from .base import Model as Model
 from .base import TargetFeaturizer as TargetFeaturizer

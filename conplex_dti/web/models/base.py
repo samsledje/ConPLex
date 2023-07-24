@@ -2,6 +2,7 @@ import enum
 
 import flask
 import fsw.models
+import numpy as np
 import sqlalchemy
 import sqlalchemy.orm
 import torch
@@ -50,3 +51,4 @@ class TargetFeaturizer(enum.Enum):
 
 
 BINARY_TORCH_TYPE = torch.float32
+BINARY_NUMPY_TYPE = np.float32
