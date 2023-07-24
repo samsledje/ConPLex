@@ -6,7 +6,7 @@ import flask
 import fsw.views
 import sqlalchemy
 
-from .. import decorators, forms, models
+from .. import decorators, forms, models, tasks
 
 bp = flask.Blueprint(
     "pairings",
@@ -76,6 +76,11 @@ class PairingCreateView(fsw.views.CreateModelView):
 
     def dispatch_valid_form_request(self):
         self.request_model_instance.user_id = flask.g.user.id
+
+    def _dispatch_valid_form_request(self):
+        response = super()._dispatch_valid_form_request()
+        tasks.model_pairing(self.request_model_instance.id)
+        return response
 
 
 bp.add_url_rule(
