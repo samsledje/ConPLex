@@ -1,5 +1,7 @@
 import typing
 
+import pathlib
+
 import sqlalchemy.orm
 
 from .base import DrugFeaturizer, Model, TargetFeaturizer, TaskStatus
@@ -47,3 +49,11 @@ class ModelOutput(Model):
     # TODO: Expose the projections as JSON for visualization.
     drug_projections: sqlalchemy.orm.Mapped[bytes]
     target_projections: sqlalchemy.orm.Mapped[bytes]
+
+
+MODELS_PATH = pathlib.Path("models")
+MODEL_PATHS: dict[DrugFeaturizer, dict[TargetFeaturizer, pathlib.Path]] = {
+    DrugFeaturizer.MORGAN_FINGERPRINT: {
+        TargetFeaturizer.PROTBERT: MODELS_PATH / "ConPLex_v1_BindingDB.pt",
+    },
+}
