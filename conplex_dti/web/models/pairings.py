@@ -51,7 +51,7 @@ class ModelOutput(Model):
     target_projections: sqlalchemy.orm.Mapped[bytes]
 
 
-MODELS_PATH = pathlib.Path("models")
+MODELS_PATH = pathlib.Path("models") / "models"
 MODEL_PATHS: dict[DrugFeaturizer, dict[TargetFeaturizer, pathlib.Path]] = {
     DrugFeaturizer.MORGAN_FINGERPRINT: {
         TargetFeaturizer.PROTBERT: MODELS_PATH / "ConPLex_v1_BindingDB.pt",
