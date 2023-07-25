@@ -39,6 +39,11 @@
                                         <a href="{{ url_for('pairings.predictions_tsv', pairing_id=pairing.id) }}">
                                             Predictions (TSV)
                                         </a>
+
+                                        <br>
+                                        <a href="{{ url_for('pairings.visualization', pairing_id=pairing.id) }}">
+                                            Visualize Projections
+                                        </a>
                                     {% elif pairing.model_status.value == "failed" %}
                                         Failed
                                     {% else %}
