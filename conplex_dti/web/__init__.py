@@ -30,6 +30,8 @@ def create_app() -> flask.Flask:
         EMAIL_SENDER_ADDRESS="conplex.web@outlook.com",
     )
 
+    app.json.sort_keys = False
+
     with app.app_context():
         from .models import register_models
         from .views import register_views
