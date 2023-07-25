@@ -185,3 +185,18 @@ def predictions_tsv(pairing_id: int):
         for drug_index, drug_id in enumerate(drug_ids)
         for target_index, target_id in enumerate(target_ids)
     ), {"Content-Type": "text/plain"}
+
+
+class VisualizationView(fsw.views.TemplateView):
+    template_name = "pairings/visualization.html.jinja"
+
+    def get_template_context(self):
+        template_context = super().get_template_context()
+        template_context["pairing_id"] = flask.request.view_args["pairing_id"]
+        return template_context
+
+
+bp.add_url_rule(
+    "/<int:pairing_id>/visualization/",
+    view_func=VisualizationView.as_view("visualization"),
+)

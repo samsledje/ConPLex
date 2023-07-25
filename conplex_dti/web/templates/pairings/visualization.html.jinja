@@ -1,0 +1,21 @@
+{% extends 'base.html.jinja' %}
+
+{% block content %}
+    <section class="mb-3">
+        <div class="container">
+            <canvas class="border rounded" id="canvas" width="512" height="512"></canvas>
+            <p><b>Status:</b> <span id="status"></span></p>
+        </div>
+    </section>
+{% endblock %}
+
+{% block footer %}
+    {{ super() }}
+
+    <script>
+        const drug_projections_url = {{ url_for('pairings.drug_projections', pairing_id=pairing_id)|tojson }}
+        const target_projections_url = {{ url_for('pairings.target_projections', pairing_id=pairing_id)|tojson }}
+        const predictions_url = {{ url_for('pairings.predictions', pairing_id=pairing_id)|tojson }}
+    </script>
+    <script src="{{ url_for('static', filename='js/pairings/visualization.js') }}"></script>
+{% endblock %}
