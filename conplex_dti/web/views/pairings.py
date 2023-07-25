@@ -8,7 +8,7 @@ import flask
 import fsw.views
 import sqlalchemy
 
-from .. import decorators, forms, models, tasks
+from .. import decorators, forms, helpers, models, tasks
 
 bp = flask.Blueprint(
     "pairings",
@@ -106,3 +106,41 @@ def load_target_ids(pairing: models.Pairing) -> list[str]:
     with target_set_file_path.open() as file:
         csv_reader = csv.reader(file, delimiter="\t")
         return [row[0] for row in csv_reader]
+
+
+@bp.route("<int:pairing_id>/drug-projections.json")
+def drug_projections(pairing_id: int):
+    pairing = models.db_session.get(models.Pairing, pairing_id)
+    drug_ids = load_drug_ids(pairing)
+
+    model_output = models.db_session.scalars(
+        sqlalchemy.select(models.ModelOutput).where(
+            models.ModelOutput.pairing_id == pairing.id
+        )
+    ).one()
+    drug_projections = helpers.convert_column_bytes_to_array(
+        model_output.drug_projections
+    ).reshape((-1, 2))
+    drug_projections = drug_projections.tolist()
+    assert len(drug_projections) == len(drug_ids)
+
+    return dict(zip(drug_ids, drug_projections))
+
+
+@bp.route("<int:pairing_id>/target-projections.json")
+def target_projections(pairing_id: int):
+    pairing = models.db_session.get(models.Pairing, pairing_id)
+    target_ids = load_target_ids(pairing)
+
+    model_output = models.db_session.scalars(
+        sqlalchemy.select(models.ModelOutput).where(
+            models.ModelOutput.pairing_id == pairing.id
+        )
+    ).one()
+    target_projections = helpers.convert_column_bytes_to_array(
+        model_output.target_projections
+    ).reshape((-1, 2))
+    target_projections = target_projections.tolist()
+    assert len(target_projections) == len(target_ids)
+
+    return dict(zip(target_ids, target_projections))
