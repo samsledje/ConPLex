@@ -148,3 +148,40 @@ def target_projections(pairing_id: int):
         raise RuntimeError
 
     return dict(zip(target_ids, target_projections))
+
+
+@bp.route("<int:pairing_id>/predictions.json")
+def predictions(pairing_id: int):
+    pairing = models.db_session.get(models.Pairing, pairing_id)
+    drug_ids = load_drug_ids(pairing)
+    target_ids = load_target_ids(pairing)
+
+    model_output = load_model_output(pairing)
+    predictions = helpers.convert_column_bytes_to_array(
+        model_output.predictions
+    ).reshape((len(drug_ids), len(target_ids)))
+    predictions = predictions.tolist()
+
+    return {
+        drug_id: dict(zip(target_ids, predictions_for_drug))
+        for drug_id, predictions_for_drug in zip(drug_ids, predictions)
+    }
+
+
+@bp.route("<int:pairing_id>/predictions.tsv")
+def predictions_tsv(pairing_id: int):
+    pairing = models.db_session.get(models.Pairing, pairing_id)
+    drug_ids = load_drug_ids(pairing)
+    target_ids = load_target_ids(pairing)
+
+    model_output = load_model_output(pairing)
+    predictions = helpers.convert_column_bytes_to_array(
+        model_output.predictions
+    ).reshape((len(drug_ids), len(target_ids)))
+    predictions = predictions.tolist()
+
+    return "\n".join(
+        f"{drug_id}\t{target_id}\t{predictions[drug_index][target_index]}"
+        for drug_index, drug_id in enumerate(drug_ids)
+        for target_index, target_id in enumerate(target_ids)
+    ), {"Content-Type": "text/plain"}
