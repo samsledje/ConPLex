@@ -5,8 +5,10 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
-    <link href="{{ url_for('static', filename='css/bootstrap.css') }}" rel="stylesheet">
+    {% block css %}
+        <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+        <link href="{{ url_for('static', filename='css/bootstrap.css') }}" rel="stylesheet">
+    {% endblock %}
 
     <title>{% block title %}ConPLex{% endblock %}</title>
 </head>
@@ -60,7 +62,9 @@
 
     {% block footer %}{% endblock %}
 
-    <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+    {% block js %}
+        <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+    {% endblock %}
 </body>
 
 </html>
