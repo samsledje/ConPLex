@@ -130,3 +130,6 @@ def model_pairing(pairing_id: int) -> None:
 
         db_session.add(model_output)
         db_session.commit()
+
+        pairing.model_status = models.TaskStatus.COMPLETED
+        db_session.commit()
