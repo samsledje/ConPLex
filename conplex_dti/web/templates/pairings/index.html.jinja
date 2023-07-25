@@ -19,6 +19,7 @@
                             <th scope="col">Target Set</th>
                             <th scope="col">Drug Featurizer</th>
                             <th scope="col">Target Featurizer</th>
+                            <th scope="col">Model Status</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -28,6 +29,17 @@
                                 <td>{{ pairing.target_set.name }}</td>
                                 <td>{{ pairing.drug_featurizer.value }}</td>
                                 <td>{{ pairing.target_featurizer.value }}</td>
+                                <td>
+                                    {% if pairing.model_status.value == "running" %}
+                                        Running
+                                    {% elif pairing.model_status.value == "completed" %}
+                                        Completed
+                                    {% elif pairing.model_status.value == "failed" %}
+                                        Failed
+                                    {% else %}
+                                        Not started
+                                    {% endif %}
+                                </td>
                             </tr>
                         {% endfor %}
                     </tbody>
