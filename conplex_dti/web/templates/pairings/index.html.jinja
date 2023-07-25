@@ -34,6 +34,26 @@
                                         Running
                                     {% elif pairing.model_status.value == "completed" %}
                                         Completed
+
+                                        <br>
+                                        <a href="{{ url_for('pairings.drug_projections', pairing_id=pairing.id) }}">
+                                            Drug Projections (JSON)
+                                        </a>
+
+                                        <br>
+                                        <a href="{{ url_for('pairings.target_projections', pairing_id=pairing.id) }}">
+                                            Target Projections (JSON)
+                                        </a>
+
+                                        <br>
+                                        <a href="{{ url_for('pairings.predictions', pairing_id=pairing.id) }}">
+                                            Predictions (JSON)
+                                        </a>
+
+                                        <br>
+                                        <a href="{{ url_for('pairings.predictions_tsv', pairing_id=pairing.id) }}">
+                                            Predictions (TSV)
+                                        </a>
                                     {% elif pairing.model_status.value == "failed" %}
                                         Failed
                                     {% else %}
