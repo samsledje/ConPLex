@@ -11,8 +11,3 @@
 // a `span` element with ID `status`
 // a `span` element with ID `prediction`
 // a relatively positioned `div` element with ID `visualization`
-
-const statusElement = document.getElementById("status")
-function setStatus(status) {
-    statusElement.innerHTML = status
-}
