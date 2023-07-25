@@ -30,9 +30,9 @@
     {{ super() }}
 
     <script>
-        const drug_projections_url = {{ url_for('pairings.drug_projections', pairing_id=pairing_id)|tojson }}
-        const target_projections_url = {{ url_for('pairings.target_projections', pairing_id=pairing_id)|tojson }}
-        const predictions_url = {{ url_for('pairings.predictions', pairing_id=pairing_id)|tojson }}
+        const drug_projections_url = {{ url_for('pairings.drug_projections', pairing_id=pairing.id)|tojson }}
+        const target_projections_url = {{ url_for('pairings.target_projections', pairing_id=pairing.id)|tojson }}
+        const predictions_url = {{ url_for('pairings.predictions', pairing_id=pairing.id)|tojson }}
     </script>
     <script src="{{ url_for('static', filename='js/pairings/visualization.js') }}"></script>
 {% endblock %}

@@ -192,7 +192,9 @@ class VisualizationView(fsw.views.TemplateView):
 
     def get_template_context(self):
         template_context = super().get_template_context()
-        template_context["pairing_id"] = flask.request.view_args["pairing_id"]
+        template_context["pairing"] = models.db_session.get(
+            models.Pairing, flask.request.view_args["pairing_id"]
+        )
         return template_context
 
 
