@@ -122,7 +122,9 @@ def drug_projections(pairing_id: int):
         model_output.drug_projections
     ).reshape((-1, 2))
     drug_projections = drug_projections.tolist()
-    assert len(drug_projections) == len(drug_ids)
+
+    if len(drug_projections) != len(drug_ids):
+        raise RuntimeError
 
     return dict(zip(drug_ids, drug_projections))
 
@@ -141,6 +143,8 @@ def target_projections(pairing_id: int):
         model_output.target_projections
     ).reshape((-1, 2))
     target_projections = target_projections.tolist()
-    assert len(target_projections) == len(target_ids)
+
+    if len(target_projections) != len(target_ids):
+        raise RuntimeError
 
     return dict(zip(target_ids, target_projections))
