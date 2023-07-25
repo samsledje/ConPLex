@@ -2,6 +2,8 @@
 Creating and analyzing data from pairings of drug and target sets.
 """
 
+import csv
+
 import flask
 import fsw.views
 import sqlalchemy
@@ -88,3 +90,19 @@ bp.add_url_rule(
     view_func=PairingCreateView.as_view("create"),
     methods=["GET", "POST"],
 )
+
+UPLOADS_FOLDER_PATH = flask.current_app.config["UPLOADS_FOLDER_PATH"]
+
+
+def load_drug_ids(pairing: models.Pairing) -> list[str]:
+    drug_set_file_path = UPLOADS_FOLDER_PATH / pairing.drug_set.upload_filename
+    with drug_set_file_path.open() as file:
+        csv_reader = csv.reader(file, delimiter="\t")
+        return [row[0] for row in csv_reader]
+
+
+def load_target_ids(pairing: models.Pairing) -> list[str]:
+    target_set_file_path = UPLOADS_FOLDER_PATH / pairing.target_set.upload_filename
+    with target_set_file_path.open() as file:
+        csv_reader = csv.reader(file, delimiter="\t")
+        return [row[0] for row in csv_reader]
