@@ -108,16 +108,20 @@ def load_target_ids(pairing: models.Pairing) -> list[str]:
         return [row[0] for row in csv_reader]
 
 
+def load_model_output(pairing: models.Pairing) -> models.ModelOutput:
+    return models.db_session.scalars(
+        sqlalchemy.select(models.ModelOutput).where(
+            models.ModelOutput.pairing_id == pairing.id
+        )
+    ).one()
+
+
 @bp.route("<int:pairing_id>/drug-projections.json")
 def drug_projections(pairing_id: int):
     pairing = models.db_session.get(models.Pairing, pairing_id)
     drug_ids = load_drug_ids(pairing)
 
-    model_output = models.db_session.scalars(
-        sqlalchemy.select(models.ModelOutput).where(
-            models.ModelOutput.pairing_id == pairing.id
-        )
-    ).one()
+    model_output = load_model_output(pairing)
     drug_projections = helpers.convert_column_bytes_to_array(
         model_output.drug_projections
     ).reshape((-1, 2))
@@ -134,11 +138,7 @@ def target_projections(pairing_id: int):
     pairing = models.db_session.get(models.Pairing, pairing_id)
     target_ids = load_target_ids(pairing)
 
-    model_output = models.db_session.scalars(
-        sqlalchemy.select(models.ModelOutput).where(
-            models.ModelOutput.pairing_id == pairing.id
-        )
-    ).one()
+    model_output = load_model_output(pairing)
     target_projections = helpers.convert_column_bytes_to_array(
         model_output.target_projections
     ).reshape((-1, 2))
