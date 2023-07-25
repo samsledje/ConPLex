@@ -1,7 +1,7 @@
 // The caller must set the following global variables to URLs that return JSON:
-// `drug_projections_url`
-// `target_projections_url`
-// `predictions_url`
+// `drugProjectionsUrl`
+// `targetProjectionsUrl`
+// `predictionsUrl`
 
 // The caller must have the following elements:
 // a `span` element with ID `selected-drug`

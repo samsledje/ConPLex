@@ -47,9 +47,9 @@
     {{ super() }}
 
     <script>
-        const drug_projections_url = {{ url_for('pairings.drug_projections', pairing_id=pairing.id)|tojson }}
-        const target_projections_url = {{ url_for('pairings.target_projections', pairing_id=pairing.id)|tojson }}
-        const predictions_url = {{ url_for('pairings.predictions', pairing_id=pairing.id)|tojson }}
+        const drugProjectionsUrl = {{ url_for('pairings.drug_projections', pairing_id=pairing.id)|tojson }}
+        const targetProjectionsUrl = {{ url_for('pairings.target_projections', pairing_id=pairing.id)|tojson }}
+        const predictionsUrl = {{ url_for('pairings.predictions', pairing_id=pairing.id)|tojson }}
     </script>
     <script src="{{ url_for('static', filename='js/pairings/visualization.js') }}"></script>
 {% endblock %}
