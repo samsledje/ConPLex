@@ -6,3 +6,8 @@
 // The caller must have a `canvas` element with ID `canvas`.
 
 // The caller must have a `span` element with ID `status`.
+
+const statusElement = document.getElementById("status")
+function setStatus(status) {
+    statusElement.innerHTML = status
+}
