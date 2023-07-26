@@ -51,6 +51,22 @@ function calculatePositionPercentage(value, bound) {
     return 100 * (value + bound) / (2 * bound)
 }
 
+function getDrugPointElementId(drugIndex) {
+    return "drug".concat("-").concat(drugIndex.toString())
+}
+
+function getTargetPointElementId(targetIndex) {
+    return "target".concat("-").concat(targetIndex.toString())
+}
+
+function getDrugPointElements(drugIds) {
+    return [...drugIds.keys()].map(drugIndex => document.getElementById(getDrugPointElementId(drugIndex)))
+}
+
+function getTargetPointElements(targetIds) {
+    return [...targetIds.keys()].map(targetIndex => document.getElementById(getTargetPointElementId(targetIndex)))
+}
+
 async function main() {
     setElementDefaults()
 
