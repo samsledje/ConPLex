@@ -49,9 +49,15 @@ async function main() {
 
     set("status", "Loading drugs.")
     const drugIdToProjection = await loadJson(drugProjectionsUrl)
+    const drugIds = Object.keys(drugIdToProjection)
+    const drugProjections = Object.values(drugIdToProjection)
+    set("drugs", drugIds.map(drugId => "<li>".concat(drugId).concat("</li>")).join(""))
 
     set("status", "Loading targets.")
     const targetIdToProjection = await loadJson(targetProjectionsUrl)
+    const targetIds = Object.keys(targetIdToProjection)
+    const targetProjections = Object.values(targetIdToProjection)
+    set("targets", targetIds.map(targetId => "<li>".concat(targetId).concat("</li>")).join(""))
 
     set("status", "Loading predictions.")
     const predictions = await loadJson(predictionsUrl)
