@@ -64,6 +64,11 @@ async function main() {
 
     set("status", "Loading predictions.")
     const predictions = await loadJson(predictionsUrl)
+
+    set("status", "Plotting drug and target projections.")
+    const projections = drugProjections.concat(targetProjections)
+    const xBound = Math.max(...projections.map(projection => Math.abs(projection[0]))) * (1 + visualizationPadding)
+    const yBound = Math.max(...projections.map(projection => Math.abs(projection[1]))) * (1 + visualizationPadding)
 }
 
 main()
