@@ -188,6 +188,8 @@ async function main() {
 
         visualizationElement.appendChild(point)
     }
+
+    set("status", "Displaying visualization.")
 }
 
 main()
