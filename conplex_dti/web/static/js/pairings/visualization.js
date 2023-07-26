@@ -37,3 +37,24 @@ function setElementDefaults() {
         set(elementId, null)
     }
 }
+
+async function loadJson(url) {
+    const response = await fetch(url)
+    const json = await response.json()
+    return json
+}
+
+async function main() {
+    setElementDefaults()
+
+    set("status", "Loading drugs.")
+    const drugIdToProjection = await loadJson(drugProjectionsUrl)
+
+    set("status", "Loading targets.")
+    const targetIdToProjection = await loadJson(targetProjectionsUrl)
+
+    set("status", "Loading predictions.")
+    const predictions = await loadJson(predictionsUrl)
+}
+
+main()
