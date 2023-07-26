@@ -47,6 +47,10 @@ async function loadJson(url) {
     return json
 }
 
+function calculatePositionPercentage(value, bound) {
+    return 100 * (value + bound) / (2 * bound)
+}
+
 async function main() {
     setElementDefaults()
 
