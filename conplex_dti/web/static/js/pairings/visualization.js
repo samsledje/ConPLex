@@ -119,6 +119,15 @@ function toggleSelectedTarget(targetIndex, targetIds, predictions) {
     }
 }
 
+function setPrediction(drugIds, targetIds, predictions) {
+    console.log(predictions)
+    if (selectedDrugIndex !== null && selectedTargetIndex !== null) {
+        set("prediction", predictions[drugIds[selectedDrugIndex]][targetIds[selectedTargetIndex]].toString())
+    } else {
+        set("prediction", null)
+    }
+}
+
 async function main() {
     setElementDefaults()
 
@@ -146,7 +155,7 @@ async function main() {
         let point = document.createElement("a")
         point.id = getDrugPointElementId(drugIndex)
         point.href = "javascript:;"
-        point.onclick = function () {toggleSelectedDrug(drugIndex, drugIds)}
+        point.onclick = function () {toggleSelectedDrug(drugIndex, drugIds); setPrediction(drugIds, targetIds, predictions)}
 
         point.classList.add("position-absolute")
         point.classList.add("translate-middle")
@@ -165,7 +174,7 @@ async function main() {
         let point = document.createElement("a")
         point.id = getTargetPointElementId(targetIndex)
         point.href = "javascript:;"
-        point.onclick = function () {toggleSelectedTarget(targetIndex, targetIds)}
+        point.onclick = function () {toggleSelectedTarget(targetIndex, targetIds); setPrediction(drugIds, targetIds, predictions)}
 
         point.classList.add("position-absolute")
         point.classList.add("translate-middle")
