@@ -89,6 +89,42 @@ async function main() {
     const projections = drugProjections.concat(targetProjections)
     const xBound = Math.max(...projections.map(projection => Math.abs(projection[0]))) * (1 + visualizationPadding)
     const yBound = Math.max(...projections.map(projection => Math.abs(projection[1]))) * (1 + visualizationPadding)
+
+    for (let drugIndex = 0; drugIndex < drugIds.length; drugIndex++) {
+        let point = document.createElement("a")
+        point.id = getDrugPointElementId(drugIndex)
+        point.href = "javascript:;"
+
+        point.classList.add("position-absolute")
+        point.classList.add("translate-middle")
+        point.classList.add("bg-warning")
+        point.classList.add("rounded-circle")
+
+        point.style.left = calculatePositionPercentage(drugProjections[drugIndex][0], xBound).toString().concat("%")
+        point.style.top = (100 - calculatePositionPercentage(drugProjections[drugIndex][1], yBound)).toString().concat("%")
+        point.style.height = "2%"
+        point.style.width = "2%"
+
+        visualizationElement.appendChild(point)
+    }
+
+    for (let targetIndex = 0; targetIndex < targetIds.length; targetIndex++) {
+        let point = document.createElement("a")
+        point.id = getTargetPointElementId(targetIndex)
+        point.href = "javascript:;"
+
+        point.classList.add("position-absolute")
+        point.classList.add("translate-middle")
+        point.classList.add("bg-info")
+        point.classList.add("rounded-circle")
+
+        point.style.left = calculatePositionPercentage(targetProjections[targetIndex][0], xBound).toString().concat("%")
+        point.style.top = (100 - calculatePositionPercentage(targetProjections[targetIndex][1], yBound)).toString().concat("%")
+        point.style.height = "2%"
+        point.style.width = "2%"
+
+        visualizationElement.appendChild(point)
+    }
 }
 
 main()
