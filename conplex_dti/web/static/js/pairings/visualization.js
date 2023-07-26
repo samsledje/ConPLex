@@ -14,6 +14,7 @@
 
 const visualizationElement = document.getElementById("visualization")
 const visualizationPadding = 0.1
+const visualizationNotSelectedPointOpacity = 0.2
 
 const elementIdToDefault = {
     "selected-drug": "No drug selected.",
@@ -67,6 +68,57 @@ function getTargetPointElements(targetIds) {
     return [...targetIds.keys()].map(targetIndex => document.getElementById(getTargetPointElementId(targetIndex)))
 }
 
+// Optional integers.
+var selectedDrugIndex = null;
+var selectedTargetIndex = null;
+
+// NOTE: The prediction element should be set after calling these functions.
+function toggleSelectedDrug(drugIndex, drugIds, predicitions) {
+    drugPointElements = getDrugPointElements(drugIds)
+    if (drugIndex === selectedDrugIndex) {
+        selectedDrugIndex = null
+        set("selected-drug", null)
+
+        for (let otherDrugPointElement of drugPointElements) {
+            otherDrugPointElement.style.opacity = null
+        }
+    } else {
+        selectedDrugIndex = drugIndex
+        set("selected-drug", drugIds[drugIndex])
+
+        for (let [otherDrugIndex, otherDrugPointElement] of drugPointElements.entries()) {
+            if (otherDrugIndex === drugIndex) {
+                otherDrugPointElement.style.opacity = null
+            } else {
+                otherDrugPointElement.style.opacity = visualizationNotSelectedPointOpacity
+            }
+        }
+    }
+}
+
+function toggleSelectedTarget(targetIndex, targetIds, predictions) {
+    targetPointElements = getTargetPointElements(targetIds)
+    if (targetIndex === selectedTargetIndex) {
+        selectedTargetIndex = null
+        set("selected-target", null)
+
+        for (let otherTargetPointElement of targetPointElements) {
+            otherTargetPointElement.style.opacity = null
+        }
+    } else {
+        selectedTargetIndex = targetIndex
+        set("selected-target", targetIds[targetIndex])
+
+        for (let [otherTargetIndex, otherTargetPointElement] of targetPointElements.entries()) {
+            if (otherTargetIndex === targetIndex) {
+                otherTargetPointElement.style.opacity = null
+            } else {
+                otherTargetPointElement.style.opacity = visualizationNotSelectedPointOpacity
+            }
+        }
+    }
+}
+
 async function main() {
     setElementDefaults()
 
@@ -94,6 +146,7 @@ async function main() {
         let point = document.createElement("a")
         point.id = getDrugPointElementId(drugIndex)
         point.href = "javascript:;"
+        point.onclick = function () {toggleSelectedDrug(drugIndex, drugIds)}
 
         point.classList.add("position-absolute")
         point.classList.add("translate-middle")
@@ -112,6 +165,7 @@ async function main() {
         let point = document.createElement("a")
         point.id = getTargetPointElementId(targetIndex)
         point.href = "javascript:;"
+        point.onclick = function () {toggleSelectedTarget(targetIndex, targetIds)}
 
         point.classList.add("position-absolute")
         point.classList.add("translate-middle")
