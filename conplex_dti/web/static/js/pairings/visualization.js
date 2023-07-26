@@ -32,7 +32,8 @@ function set(elementId, content) {
     }
 }
 
-// TODO: Consider creating a `main` function.
-for (let elementId in elementIdToDefault) {
-    set(elementId, null)
+function setElementDefaults() {
+    for (let elementId in elementIdToDefault) {
+        set(elementId, null)
+    }
 }
