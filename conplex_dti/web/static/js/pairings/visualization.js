@@ -12,6 +12,9 @@
 // a `span` element with ID `prediction`
 // a relatively positioned `div` element with ID `visualization`
 
+const visualizationElement = document.getElementById("visualization")
+const visualizationPadding = 0.1
+
 const elementIdToDefault = {
     "selected-drug": "No drug selected.",
     "selected-target": "No target selected.",
