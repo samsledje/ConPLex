@@ -117,8 +117,12 @@ def load_model_output(pairing: models.Pairing) -> models.ModelOutput:
 
 
 @bp.route("<int:pairing_id>/drug-projections.json")
+@decorators.user_required
 def drug_projections(pairing_id: int):
     pairing = models.db_session.get(models.Pairing, pairing_id)
+    if pairing.user_id != flask.g.user.id:
+        flask.abort(401)
+
     drug_ids = load_drug_ids(pairing)
 
     model_output = load_model_output(pairing)
@@ -134,8 +138,12 @@ def drug_projections(pairing_id: int):
 
 
 @bp.route("<int:pairing_id>/target-projections.json")
+@decorators.user_required
 def target_projections(pairing_id: int):
     pairing = models.db_session.get(models.Pairing, pairing_id)
+    if pairing.user_id != flask.g.user.id:
+        flask.abort(401)
+
     target_ids = load_target_ids(pairing)
 
     model_output = load_model_output(pairing)
@@ -151,8 +159,12 @@ def target_projections(pairing_id: int):
 
 
 @bp.route("<int:pairing_id>/predictions.json")
+@decorators.user_required
 def predictions(pairing_id: int):
     pairing = models.db_session.get(models.Pairing, pairing_id)
+    if pairing.user_id != flask.g.user.id:
+        flask.abort(401)
+
     drug_ids = load_drug_ids(pairing)
     target_ids = load_target_ids(pairing)
 
@@ -169,8 +181,12 @@ def predictions(pairing_id: int):
 
 
 @bp.route("<int:pairing_id>/predictions.tsv")
+@decorators.user_required
 def predictions_tsv(pairing_id: int):
     pairing = models.db_session.get(models.Pairing, pairing_id)
+    if pairing.user_id != flask.g.user.id:
+        flask.abort(401)
+
     drug_ids = load_drug_ids(pairing)
     target_ids = load_target_ids(pairing)
 
@@ -187,18 +203,14 @@ def predictions_tsv(pairing_id: int):
     ), {"Content-Type": "text/plain"}
 
 
-class VisualizationView(fsw.views.TemplateView):
-    template_name = "pairings/visualization.html.jinja"
+@bp.route("<int:pairing_id>/visualization/")
+@decorators.user_required
+def visualization(pairing_id: int):
+    pairing = models.db_session.get(models.Pairing, pairing_id)
+    if pairing.user_id != flask.g.user.id:
+        flask.abort(401)
 
-    def get_template_context(self):
-        template_context = super().get_template_context()
-        template_context["pairing"] = models.db_session.get(
-            models.Pairing, flask.request.view_args["pairing_id"]
-        )
-        return template_context
-
-
-bp.add_url_rule(
-    "/<int:pairing_id>/visualization/",
-    view_func=VisualizationView.as_view("visualization"),
-)
+    return flask.render_template(
+        "pairings/visualization.html.jinja",
+        pairing=pairing,
+    )
