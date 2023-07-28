@@ -120,7 +120,6 @@ function toggleSelectedTarget(targetIndex, targetIds, predictions) {
 }
 
 function setPrediction(drugIds, targetIds, predictions) {
-    console.log(predictions)
     if (selectedDrugIndex !== null && selectedTargetIndex !== null) {
         set("prediction", predictions[drugIds[selectedDrugIndex]][targetIds[selectedTargetIndex]].toString())
     } else {
