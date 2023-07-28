@@ -29,7 +29,7 @@ const elementIdToDefault = {
 function set(elementId, content) {
     if (elementId in elementIdToDefault) {
         document.getElementById(elementId).innerHTML = (
-            content ? content : elementIdToDefault[elementId]
+            content !== null ? content : elementIdToDefault[elementId]
         )
     } else {
         throw new Error()
