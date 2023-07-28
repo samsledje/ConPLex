@@ -134,18 +134,44 @@ async function main() {
     const drugIdToProjection = await loadJson(drugProjectionsUrl)
     const drugIds = Object.keys(drugIdToProjection)
     const drugProjections = Object.values(drugIdToProjection)
-    set("drugs", drugIds.map(drugId => "<li>".concat(drugId).concat("</li>")).join(""))
 
     set("status", "Loading targets.")
     const targetIdToProjection = await loadJson(targetProjectionsUrl)
     const targetIds = Object.keys(targetIdToProjection)
     const targetProjections = Object.values(targetIdToProjection)
-    set("targets", targetIds.map(targetId => "<li>".concat(targetId).concat("</li>")).join(""))
 
     set("status", "Loading predictions.")
     const predictions = await loadJson(predictionsUrl)
 
     set("status", "Plotting drug and target projections.")
+    set("drugs", "")
+    let drugList = document.getElementById("drugs")
+    for (let [drugIndex, drugId] of drugIds.entries()) {
+        let drugListItem = document.createElement("li")
+
+        let drugListLink = document.createElement("a")
+        drugListLink.href = "javascript:;"
+        drugListLink.onclick = function () {toggleSelectedDrug(drugIndex, drugIds); setPrediction(drugIds, targetIds, predictions)}
+        drugListLink.innerHTML = drugId.toString()
+
+        drugListItem.appendChild(drugListLink)
+        drugList.appendChild(drugListItem)
+    }
+
+    set("targets", "")
+    let targetList = document.getElementById("targets")
+    for (let [targetIndex, targetId] of targetIds.entries()) {
+        let targetListItem = document.createElement("li")
+
+        let targetListLink = document.createElement("a")
+        targetListLink.href = "javascript:;"
+        targetListLink.onclick = function () {toggleSelectedTarget(targetIndex, targetIds); setPrediction(drugIds, targetIds, predictions)}
+        targetListLink.innerHTML = targetId.toString()
+
+        targetListItem.appendChild(targetListLink)
+        targetList.appendChild(targetListItem)
+    }
+
     const projections = drugProjections.concat(targetProjections)
     const xBound = Math.max(...projections.map(projection => Math.abs(projection[0]))) * (1 + visualizationPadding)
     const yBound = Math.max(...projections.map(projection => Math.abs(projection[1]))) * (1 + visualizationPadding)
