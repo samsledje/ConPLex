@@ -1,4 +1,5 @@
 from .datamodules import (
+    PairedDataset,
     BinaryDataset,
     ContrastiveDataset,
     DTIDataModule,

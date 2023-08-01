@@ -4,11 +4,12 @@
 
 [![ConPLex Releases](https://img.shields.io/github/v/release/samsledje/ConPLex?include_prereleases)](https://github.com/samsledje/ConPLex/releases)
 [![PyPI](https://img.shields.io/pypi/v/conplex-dti)](https://pypi.org/project/conplex-dti/)
-[![Documentation Status](https://readthedocs.org/projects/conplex/badge/?version=main)](https://conplex.readthedocs.io/en/main/?badge=main)
+[![Build](https://github.com/samsledje/ConPLex/actions/workflows/build.yml/badge.svg)](https://github.com/samsledje/ConPLex/actions/workflows/build.yml)
+[![Documentation Status](https://readthedocs.org/projects/conplex/badge/?version=latest)](https://conplex.readthedocs.io/en/main/?badge=main)
 [![License](https://img.shields.io/github/license/samsledje/ConPLex)](https://github.com/samsledje/ConPLex/blob/main/LICENSE)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
-🚧🚧 Please note that ConPLex v0.1.0 is currently a pre-release and is actively being developed. For the code used to generate our PNAS results, see the [manuscript code](https://github.com/samsledje/ConPLex_dev) 🚧🚧
+🚧🚧 Please note that ConPLex is currently a pre-release and is actively being developed. For the code used to generate our PNAS results, see the [manuscript code](https://github.com/samsledje/ConPLex_dev) 🚧🚧
 
  - [Homepage](http://conplex.csail.mit.edu)
  - [Documentation](https://d-script.readthedocs.io/en/main/)
@@ -20,6 +21,8 @@ Sequence-based prediction of drug-target interactions has the potential to accel
 ## Installation
 
 ### Install from PyPI
+
+You should first have a version of [`cudatoolkit`](https://anaconda.org/nvidia/cudatoolkit) compatible with your system installed. Then run
 
 ```bash
 pip install conplex-dti
@@ -34,7 +37,7 @@ cd ConPLex
 conda create -n conplex-dti python=3.9
 conda activate conplex-dti
 make poetry-download
-export PATH=[poetry install location]:PATH
+export PATH="[poetry  install  location]:$PATH"
 export PYTHON_KEYRING_BACKEND=keyring.backends.null.Keyring
 make install
 conplex-dti --help
@@ -42,10 +45,14 @@ conplex-dti --help
 
 ## Usage
 
-### Download benchmark data sets
+### Download benchmark data sets and pre-trained models
 
 ```bash
-conplex-dti download --to datasets --benchmarks davis bindingdb biosnap biosnap_prot biosnap_mol --models ConPLex_v1_BindingDB
+conplex-dti download --to datasets --benchmarks davis bindingdb biosnap biosnap_prot biosnap_mol dude
+```
+
+```bash
+conplex-dti download --to models --models ConPLex_v1_BindingDB
 ```
 
 ### Run benchmark training
@@ -57,8 +64,10 @@ conplex-dti train --run-id TestRun --config config/default_config.yaml
 ### Make predictions with a trained model
 
 ```bash
-...
+conplex-dti predict --data-file [pair predict file].tsv --model-path ./models/ConPLex_v1_BindingDB.pt --outfile ./results.tsv
 ```
+
+Format of `[pair predict file].tsv` should be `[protein ID]\t[molecule ID]\t[protein Sequence]\t[molecule SMILES]`
 
 ### Visualize co-embedding space
 
@@ -68,7 +77,7 @@ conplex-dti train --run-id TestRun --config config/default_config.yaml
 
 ## Reference
 
-If you use ConPLex, please cite [Contrastive learning in protein language space predicts interactions between drugs and protein targets]("https://www.pnas.org/doi/10.1073/pnas.2220778120") by Rohit Singh*, Samuel Sledzieski*, Bryan Bryson, Lenore Cowen and Bonnie Berger, currently in press at PNAS.
+If you use ConPLex, please cite [Contrastive learning in protein language space predicts interactions between drugs and protein targets](https://www.pnas.org/doi/10.1073/pnas.2220778120) by Rohit Singh*, Samuel Sledzieski*, Bryan Bryson, Lenore Cowen and Bonnie Berger, currently in press at PNAS.
 
 ```bash
 @article{singh2023contrastive,

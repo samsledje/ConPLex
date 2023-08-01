@@ -11,13 +11,12 @@ import numpy as np
 import pandas as pd
 import torch
 import torchmetrics
+import wandb
 from omegaconf import OmegaConf
 from torch import nn
 from torch.autograd import Variable
 from torch.utils import data
 from tqdm.auto import tqdm
-
-import wandb
 
 from ..dataset import (
     DTIDataModule,
@@ -29,10 +28,11 @@ from ..dataset import (
 from ..featurizer import get_featurizer
 from ..model import architectures as model_types
 from ..model.margin import MarginScheduledLossFunction
-from ..utils import config_logger, get_logger, set_random_seed
+from ..utils import config_logger, set_random_seed
 
-logg = get_logger()
-
+logg = config_logger(
+    None, "%(asctime)s [%(levelname)s] %(message)s", level=2, use_stdout=True
+)
 
 def add_args(parser: ArgumentParser):
     parser.add_argument("--run-id", required=True, help="Experiment ID", dest="run_id")
@@ -331,11 +331,13 @@ def main(args):
     if config.contrastive:
         logg.info("Loading contrastive data (DUDE)")
         dude_drug_featurizer = get_featurizer(
-            config.drug_featurizer, save_dir=get_task_dir("DUDe", database_root=config.data_cache_dir)
+            config.drug_featurizer,
+            save_dir=get_task_dir("DUDe", database_root=config.data_cache_dir),
         )
 
         dude_target_featurizer = get_featurizer(
-            config.target_featurizer, save_dir=get_task_dir("DUDe", database_root=config.data_cache_dir)
+            config.target_featurizer,
+            save_dir=get_task_dir("DUDe", database_root=config.data_cache_dir),
         )
 
         contrastive_datamodule = DUDEDataModule(

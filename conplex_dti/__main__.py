@@ -29,7 +29,7 @@ def main():
         "download": (cli.download, cli.download_parser),
         # "embed": embed,
         # "evaluate": evaluate,
-        # "predict": predict,
+        "predict": (cli.predict, cli.predict_parser),
     }
 
     for name, (main_func, args_func) in modules.items():

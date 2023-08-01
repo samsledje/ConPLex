@@ -1,13 +1,13 @@
 import os
-import sys
 import shutil
+import sys
 import urllib.request
-from functools import wraps, partial
 from argparse import ArgumentParser
+from functools import partial, wraps
 from pathlib import Path
 
-from ..utils import config_logger, get_logger
 from ..dataset import get_task_dir
+from ..utils import config_logger, get_logger
 
 logg = config_logger(
     None, "%(asctime)s [%(levelname)s] %(message)s", level=2, use_stdout=True
@@ -46,7 +46,7 @@ def add_args(parser: ArgumentParser):
             "biosnap_prot",
             "biosnap_mol",
             "dude",
-#            "dti_dg",
+            #            "dti_dg",
         ],
         help="Benchmarks to download.",
     )
@@ -62,7 +62,9 @@ def add_args(parser: ArgumentParser):
     return parser
 
 
-def download_safe(remote_path: str, local_path: str, key: str = "file", verbose: bool = True) -> str:
+def download_safe(
+    remote_path: str, local_path: str, key: str = "file", verbose: bool = True
+) -> str:
     if not os.path.exists(local_path):
         try:
             if verbose:
@@ -76,6 +78,7 @@ def download_safe(remote_path: str, local_path: str, key: str = "file", verbose:
             sys.exit(1)
     return local_path
 
+
 def main(args):
     args.to = Path(args.to).absolute()
     logg.info(f"Download Location: {args.to}")
@@ -87,26 +90,31 @@ def main(args):
         logg.info(f"Downloading {bm}...")
         task_dir = Path(get_task_dir(bm, database_root = args.to))
         os.makedirs(task_dir, exist_ok = True)
-        
+
         if bm == "dude":
-            fi_list = ["full.tsv", "dude_cross_type_train_test_split.csv", "dude_within_type_train_test_split.csv"]
+            fi_list = [
+                "full.tsv",
+                "dude_cross_type_train_test_split.csv",
+                "dude_within_type_train_test_split.csv",
+            ]
         else:
             fi_list = ["train.csv", "val.csv", "test.csv"]
-        
+
         for fi in fi_list:
             local_path = task_dir / fi
             remote_base = get_remote_path(bm)
             remote_path = f"{remote_base}/{fi}"
-            download_safe(remote_path, local_path, key = f"{bm}/{fi}")
+            download_safe(remote_path, local_path, key=f"{bm}/{fi}")
 
     logg.info("[MODELS]")
     models = args.models or []
     for mo in models:
         model_dir = args.to / "models"
-        os.makedirs(model_dir, exist_ok = True)
+        os.makedirs(model_dir, exist_ok=True)
         local_path = (model_dir / mo).with_suffix(".pt")
         remote_path = get_remote_path(mo)
-        download_safe(remote_path, local_path, key = mo)
+        download_safe(remote_path, local_path, key=mo)
+
 
 if __name__ == "__main__":
     parser = ArgumentParser()
