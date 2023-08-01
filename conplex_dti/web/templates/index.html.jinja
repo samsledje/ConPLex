@@ -1,0 +1,17 @@
+{% extends 'base.html.jinja' %}
+
+{% block content %}
+    <section>
+        <div class="container">
+            <h1>ConPLex Web</h1>
+
+            <p>
+                {% if g.user %}
+                    Welcome, <em>{{ g.user.email_address }}</em>.
+                {% else %}
+                    Welcome.
+                {% endif %}
+            </p>
+        </div>
+    </section>
+{% endblock %}

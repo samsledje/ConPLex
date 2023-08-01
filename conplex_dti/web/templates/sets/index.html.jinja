@@ -1,0 +1,115 @@
+{% extends 'base.html.jinja' %}
+
+{% block content %}
+    <section class="mb-3">
+        <div class="container">
+            <div class="d-flex mb-2">
+                <h1 class="mb-0">Drug Sets</h1>
+
+                <a class="btn btn-primary ms-auto my-auto" href="{{ url_for('sets.create_drug_set') }}">
+                    Upload a Drug Set
+                </a>
+            </div>
+
+            {% if drug_sets %}
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Name</th>
+                            <th scope="col">Set Size</th>
+                            <th scope="col">Featurizing</th>
+                            <th scope="col">Expiration Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for drug_set in drug_sets|reverse %}
+                            <tr>
+                                <td>{{ drug_set.name }}</td>
+                                <td>
+                                    {% if drug_set.count %}
+                                        {{ drug_set.count }}
+                                        {% if drug_set.count == 1 %}
+                                            drug
+                                        {% else %}
+                                            drugs
+                                        {% endif %}
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if drug_set.featurizer_status.value == "running" %}
+                                        Running
+                                    {% elif drug_set.featurizer_status.value == "completed" %}
+                                        Completed
+                                    {% elif drug_set.featurizer_status.value == "failed" %}
+                                        Failed
+                                    {% else %}
+                                        Not started
+                                    {% endif %}
+                                </td>
+                                <td>{{ drug_set.get_expired_at().strftime("%B %d, %Y") }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                You have not uploaded any drug sets.
+            {% endif %}
+        </div>
+    </section>
+
+    <section class="mb-3">
+        <div class="container">
+            <div class="d-flex mb-2">
+                <h1 class="mb-0">Target Sets</h1>
+
+                <a class="btn btn-primary ms-auto my-auto" href="{{ url_for('sets.create_target_set') }}">
+                    Upload a Target Set
+                </a>
+            </div>
+
+            {% if target_sets %}
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Name</th>
+                            <th scope="col">Set Size</th>
+                            <th scope="col">Featurizing</th>
+                            <th scope="col">Expiration Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for target_set in target_sets|reverse %}
+                            <tr>
+                                <td>{{ target_set.name }}</td>
+                                <td>
+                                    {% if target_set.count %}
+                                        {{ target_set.count }}
+                                        {% if target_set.count == 1 %}
+                                            target
+                                        {% else %}
+                                            targets
+                                        {% endif %}
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if target_set.featurizer_status.value == "running" %}
+                                        Running
+                                    {% elif target_set.featurizer_status.value == "completed" %}
+                                        Completed
+                                    {% elif target_set.featurizer_status.value == "failed" %}
+                                        Failed
+                                    {% else %}
+                                        Not started
+                                    {% endif %}
+                                </td>
+                                <td>{{ target_set.get_expired_at().strftime("%B %d, %Y") }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                You have not uploaded any target sets.
+            {% endif %}
+        </div>
+    </section>
+{% endblock %}

@@ -1,0 +1,34 @@
+{% macro render_fields(form) %}
+    {% for field in form %}
+        {% if field.type == 'CSRFTokenField' %}
+            {{ field }}
+        {% elif field.type == 'SubmitField' %}
+            <div class="d-grid">
+                {{ field(class_='btn btn-primary') }}
+            </div>
+        {% else %}
+            <div class="mb-3">
+                {{ field.label(class_='form-label') }}
+
+                {% set field_class = 'form-control' %}
+                {% if field.type == 'SelectField' %}
+                    {% set field_class = 'form-select' %}
+                {% endif %}
+
+                {% if field.errors %}
+                    {{ field(class_=field_class + ' is-invalid') }}
+
+                    {% for error in field.errors %}
+                        <div class="invalid-feedback">{{ error }}</div>
+                    {% endfor %}
+                {% else %}
+                    {{ field(class_=field_class) }}
+                {% endif %}
+
+                {% if field.description %}
+                    <div class="form-text">{{ field.description }} </div>
+                {% endif %}
+            </div>
+        {% endif %}
+    {% endfor %}
+{% endmacro %}

@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    {% block css %}
+        <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+        <link href="{{ url_for('static', filename='css/bootstrap.css') }}" rel="stylesheet">
+    {% endblock %}
+
+    <title>{% block title %}ConPLex{% endblock %}</title>
+</head>
+
+{# TODO: Consider using top margins rather than bottom ones for spacing. #}
+
+<body>
+    {% block header %}
+        <header>
+            <nav class="navbar navbar-expand-md navbar-light border-bottom mb-3">
+                <div class="container">
+                    <a class="navbar-brand" href="{{ url_for('index') }}">ConPLex Web</a>
+
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-content">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <div class="collapse navbar-collapse" id="navbar-content">
+                        <ul class="navbar-nav ms-auto">
+                            {% if g.user %}
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ url_for('sets.index') }}">
+                                        Sets
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ url_for('pairings.index') }}">
+                                        Pairings
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="btn btn-primary ms-2" href="{{ url_for('users.logout') }}">
+                                        Log Out
+                                    </a>
+                                </li>
+                            {% else %}
+                                <li class="nav-item">
+                                    <a class="btn btn-primary ms-2" href="{{ url_for('users.login') }}">
+                                        Log In
+                                    </a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </header>
+    {% endblock %}
+
+    {% block content %}{% endblock %}
+
+    {% block footer %}{% endblock %}
+
+    {% block js %}
+        <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+    {% endblock %}
+</body>
+
+</html>

@@ -47,6 +47,10 @@ transformers = "^4.26.1"
 PyTDC = "^0.3.9"
 typer = {extras = ["all"], version = "^0.4.0"}
 rich = "^13.3.2"
+fsw = {git = "https://github.com/bhushan-mohanraj/fsw.git", rev = "0.3.2"}
+email-validator = "^2.0.0.post2"
+alembic = "^1.11.0"
+huey = "^2.4.5"
 biopython = "^1.81"
 
 [tool.poetry.group.dev.dependencies]

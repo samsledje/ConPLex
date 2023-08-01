@@ -1,0 +1,17 @@
+{% extends 'base.html.jinja' %}
+
+{% block content %}
+    <section>
+        <div class="container">
+            <h1>Login Confirmation</h1>
+
+            <p>
+                An email from <em>{{ config["EMAIL_SENDER_ADDRESS"] }}</em>
+                has been sent to <em>{{ login_email_address }}</em>
+                with a login link.
+                This link
+                will expire after five minutes.
+            </p>
+        </div>
+    </section>
+{% endblock %}

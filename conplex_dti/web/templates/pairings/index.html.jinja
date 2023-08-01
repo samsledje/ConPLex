@@ -1,0 +1,62 @@
+{% extends 'base.html.jinja' %}
+
+{% block content %}
+    <section class="mb-3">
+        <div class="container">
+            <div class="d-flex mb-2">
+                <h1 class="mb-0">Pairings</h1>
+
+                <a class="btn btn-primary ms-auto my-auto" href="{{ url_for('pairings.create') }}">
+                    Create a Pairing
+                </a>
+            </div>
+
+            {% if pairings %}
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Drug Set</th>
+                            <th scope="col">Target Set</th>
+                            <th scope="col">Drug Featurizer</th>
+                            <th scope="col">Target Featurizer</th>
+                            <th scope="col">Model Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for pairing in pairings|reverse %}
+                            <tr>
+                                <td>{{ pairing.drug_set.name }}</td>
+                                <td>{{ pairing.target_set.name }}</td>
+                                <td>{{ pairing.drug_featurizer.value }}</td>
+                                <td>{{ pairing.target_featurizer.value }}</td>
+                                <td>
+                                    {% if pairing.model_status.value == "running" %}
+                                        Running
+                                    {% elif pairing.model_status.value == "completed" %}
+                                        Completed
+
+                                        <br>
+                                        <a href="{{ url_for('pairings.predictions_tsv', pairing_id=pairing.id) }}">
+                                            Predictions (TSV)
+                                        </a>
+
+                                        <br>
+                                        <a href="{{ url_for('pairings.visualization', pairing_id=pairing.id) }}">
+                                            Visualize Projections
+                                        </a>
+                                    {% elif pairing.model_status.value == "failed" %}
+                                        Failed
+                                    {% else %}
+                                        Not started
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                You have not created any pairings.
+            {% endif %}
+        </div>
+    </section>
+{% endblock %}

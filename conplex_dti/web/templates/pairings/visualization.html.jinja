@@ -1,0 +1,55 @@
+{% extends 'base.html.jinja' %}
+
+{% block content %}
+    <section class="mb-3">
+        <div class="container">
+            <div class="row">
+                <div class="col-md">
+                    <h1>Drugs</h1>
+
+                    <ul>
+                        <li><b>Set:</b> {{ pairing.drug_set.name }}</li>
+                        <li><b>Selected Drug:</b> <span id="selected-drug"></span></li>
+                        <li>
+                            <b>Drugs:</b>
+                            <ul id="drugs"></ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md">
+                    <h1>Targets</h1>
+
+                    <ul>
+                        <li><b>Set:</b> {{ pairing.target_set.name }}</li>
+                        <li><b>Selected Target:</b> <span id="selected-target"></span></li>
+                        <li>
+                            <b>Targets:</b>
+                            <ul id="targets"></ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <h1>Visualization</h1>
+
+                    <ul>
+                        <li><b>Status:</b> <span id="status"></span></li>
+                        <li><b>Prediction:</b> <span id="prediction"></span></li>
+                    </ul>
+
+                    <div id="visualization" class="position-relative border rounded w-100" style="height: 0; padding-bottom: 100%"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block js %}
+    {{ super() }}
+
+    <script>
+        const drugProjectionsUrl = {{ url_for('pairings.drug_projections', pairing_id=pairing.id)|tojson }}
+        const targetProjectionsUrl = {{ url_for('pairings.target_projections', pairing_id=pairing.id)|tojson }}
+        const predictionsUrl = {{ url_for('pairings.predictions', pairing_id=pairing.id)|tojson }}
+    </script>
+    <script src="{{ url_for('static', filename='js/pairings/visualization.js') }}"></script>
+{% endblock %}
