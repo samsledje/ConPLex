@@ -52,7 +52,7 @@ conplex-dti download --to datasets --benchmarks davis bindingdb biosnap biosnap_
 ```
 
 ```bash
-conplex-dti download --to models --models ConPLex_v1_BindingDB
+conplex-dti download --to . --models ConPLex_v1_BindingDB
 ```
 
 ### Run benchmark training
