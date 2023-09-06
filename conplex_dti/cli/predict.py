@@ -94,8 +94,8 @@ def main(args):
     logg.info(f"Loading model from {args.model_path}")
     target_featurizer = ProtBertFeaturizer(
         save_dir=args.data_cache_dir, per_tok=False
-    ).cuda(device)
-    drug_featurizer = MorganFeaturizer(save_dir=args.data_cache_dir).cuda(device)
+    ).to(device)
+    drug_featurizer = MorganFeaturizer(save_dir=args.data_cache_dir).to(device)
 
     drug_featurizer.preload(query_df["moleculeSmiles"].unique())
     target_featurizer.preload(query_df["proteinSequence"].unique())
