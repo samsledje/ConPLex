@@ -92,6 +92,8 @@ If you use ConPLex, please cite [Contrastive learning in protein language space 
 }
 ```
 
+Thanks to Ava Amini, Kevin Yang, and Sevahn Vorperian from MSR New England for suggesting the use of the triplet distance contrastive loss function without the sigmoid activation. The default has now been changed. For the original formulation with the sigmoid activation, you can set the `--use-sigmoid-cosine` flag during training.
+
 ### Manuscript Code
 
 Code used to generate results in the manuscript can be found in the [development repository](https://github.com/samsledje/ConPLex_dev)

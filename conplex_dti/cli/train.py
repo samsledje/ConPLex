@@ -169,6 +169,10 @@ def add_args(parser: ArgumentParser):
     train_group.add_argument(
         "--margin-t0", type=int, help="number of epochs to reset margin"
     )
+    train_group.add_argument(
+        "--use-sigmoid-cosine", type=bool, action="store_true", dest="sigmoid_cosine", 
+        help="Use sigmoid cosine distance instead of just cosine distance for contrastive loss"
+    )
 
     return parser
 
@@ -382,11 +386,13 @@ def main(args):
     )
 
     if config.contrastive:
+        config.dist_fn = "sigmoid_cosine_distance" if config.sigmoid_cosine else "cosine_distance"
         contrastive_loss_fct = MarginScheduledLossFunction(
             M_0=config.margin_max,
             N_epoch=config.epochs,
             N_restart=config.margin_t0,
             update_fn=config.margin_fn,
+            dist_fn=config.dist_fn,
         )
         opt_contrastive = torch.optim.AdamW(model.parameters(), lr=config.clr)
         lr_scheduler_contrastive = torch.optim.lr_scheduler.CosineAnnealingWarmRestarts(

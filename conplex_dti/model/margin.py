@@ -22,11 +22,19 @@ def sigmoid_cosine_distance_p(x, y, p=1):
     cosine_sim = torch.nn.CosineSimilarity()
     return (1 - sig(cosine_sim(x, y))) ** p
 
+def cosine_distance_p(x, y, p=1):
+    cosine_sim = torch.nn.CosineSimilarity()
+    return (1 - cosine_sim(x, y)) ** p
 
 MARGIN_FN_DICT = {
     "tanh_decay": tanh_decay,
     "cosine_anneal": cosine_anneal,
     "no_decay": no_decay,
+}
+
+DIST_FN_DICT = {
+    "sigmoid_cosine_distance": sigmoid_cosine_distance_p,
+    "cosine_distance": cosine_distance_p,
 }
 
 
@@ -37,6 +45,7 @@ class MarginScheduledLossFunction:
         N_epoch: float = 50,
         N_restart: float = -1,
         update_fn="tanh_decay",
+        dist_fn="cosine_distance",
     ):
         self.M_0 = M_0
         self.N_epoch = N_epoch
@@ -50,6 +59,7 @@ class MarginScheduledLossFunction:
 
         self._update_fn_str = update_fn
         self._update_margin_fn = self._get_update_fn(update_fn)
+        self._dist_fn = DIST_FN_DICT[dist_fn]
 
         self._update_loss_fn()
 
