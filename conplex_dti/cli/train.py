@@ -170,7 +170,7 @@ def add_args(parser: ArgumentParser):
         "--margin-t0", type=int, help="number of epochs to reset margin"
     )
     train_group.add_argument(
-        "--use-sigmoid-cosine", type=bool, action="store_true", dest="sigmoid_cosine", 
+        "--use-sigmoid-cosine", action="store_true", dest="sigmoid_cosine", 
         help="Use sigmoid cosine distance instead of just cosine distance for contrastive loss"
     )
 
