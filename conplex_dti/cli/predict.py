@@ -46,8 +46,8 @@ def add_args(parser: ArgumentParser):
         "--device",
         type=str,
         required=False,
-        default="cuda:0",
-        help="Device to use for predictions. Default: cuda:0",
+        default="0",
+        help="Device to use for predictions. Default: 0",
     )
     parser.add_argument(
         "--batch-size",
