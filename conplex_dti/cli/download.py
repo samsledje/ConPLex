@@ -1,6 +1,7 @@
 import os
 import shutil
 import sys
+import ssl
 import urllib.request
 from argparse import ArgumentParser
 from functools import partial, wraps
@@ -67,9 +68,10 @@ def download_safe(
 ) -> str:
     if not os.path.exists(local_path):
         try:
+            sslcontext = ssl.SSLContext()
             if verbose:
                 logg.info(f"Downloading {key} from {remote_path} to {local_path}...")
-            with urllib.request.urlopen(remote_path) as response, open(
+            with urllib.request.urlopen(remote_path, context=sslcontext) as response, open(
                 local_path, "wb"
             ) as out_file:
                 shutil.copyfileobj(response, out_file)
