@@ -9,8 +9,6 @@
 [![License](https://img.shields.io/github/license/samsledje/ConPLex)](https://github.com/samsledje/ConPLex/blob/main/LICENSE)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
-🚧🚧 Please note that ConPLex is currently a pre-release and is actively being developed. For the code used to generate our PNAS results, see the [manuscript code](https://github.com/samsledje/ConPLex_dev) 🚧🚧
-
  - [Homepage](http://conplex.csail.mit.edu)
  - [Documentation](https://d-script.readthedocs.io/en/main/)
 
