@@ -10,7 +10,7 @@
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
  - [Homepage](http://conplex.csail.mit.edu)
- - [Documentation](https://d-script.readthedocs.io/en/main/)
+ - [Documentation](https://conplex.readthedocs.io/en/latest/)
 
 ## Abstract
 
