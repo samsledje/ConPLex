@@ -150,13 +150,14 @@ class Featurizer:
         seq_list: T.List[str],
         verbose: bool = True,
         write_first: bool = True,
+        force_recompute: bool = False,
     ) -> None:
         logg.info(f"Preloading {self.name} features from {self.path}")
 
-        if write_first and not self._save_path.exists():
+        if (not force_recompute) and write_first and (not self._save_path.exists()):
             self.write_to_disk(seq_list, verbose=verbose)
 
-        if self._save_path.exists():
+        if (not force_recompute) and self._save_path.exists():
             with h5py.File(self._save_path, "r") as h5fi:
                 for seq in tqdm(seq_list, disable=not verbose, desc=self.name):
                     if seq in h5fi:

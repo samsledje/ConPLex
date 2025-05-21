@@ -43,6 +43,16 @@ def add_args(parser: ArgumentParser):
         help="Directory to store the Morgan features and ProtBert .h5 files that are created within to the program. Default: .",
     )
     parser.add_argument(
+        "--force-recompute-drug",
+        action="store_true",
+        help="Force recompute of the Morgan features. Default: False",
+    )
+    parser.add_argument(
+        "--force-recompute-target",
+        action="store_true",
+        help="Force recompute of the ProtBert features. Default: False",
+    )
+    parser.add_argument(
         "--device",
         type=str,
         required=False,
@@ -97,8 +107,8 @@ def main(args):
     ).to(device)
     drug_featurizer = MorganFeaturizer(save_dir=args.data_cache_dir).to(device)
 
-    drug_featurizer.preload(query_df["moleculeSmiles"].unique())
-    target_featurizer.preload(query_df["proteinSequence"].unique())
+    drug_featurizer.preload(query_df["moleculeSmiles"].unique(), force_recompute=args.force_recompute_drug)
+    target_featurizer.preload(query_df["proteinSequence"].unique(), force_recompute=args.force_recompute_target)
 
     model = SimpleCoembeddingNoSigmoid(
         drug_featurizer.shape, target_featurizer.shape, 1024
